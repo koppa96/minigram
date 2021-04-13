@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  minigram.api:
+    image: ${DOCKER_REGISTRY-}minigramapi
+    build:
+      context: .
+      dockerfile: Minigram.Api/Dockerfile
+
+  minigram.identityprovider:
+    image: ${DOCKER_REGISTRY-}minigramidentityprovider
+    build:
+      context: .
+      dockerfile: Minigram.IdentityProvider/Dockerfile
+
