@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Minigram.Application.Abstractions.Dtos;
 using Minigram.Application.Abstractions.Services;
@@ -21,18 +20,15 @@ namespace Minigram.Application.Features.FriendManagement.Services
     public class FriendService : IFriendService
     {
         private readonly MinigramDbContext context;
-        private readonly IConfigurationProvider configurationProvider;
         private readonly IIdentityService identityService;
         private readonly INotificationService<IFriendshipClient> notificationService;
 
         public FriendService(
             MinigramDbContext context,
-            IConfigurationProvider configurationProvider,
             IIdentityService identityService,
             INotificationService<IFriendshipClient> notificationService)
         {
             this.context = context;
-            this.configurationProvider = configurationProvider;
             this.identityService = identityService;
             this.notificationService = notificationService;
         }
