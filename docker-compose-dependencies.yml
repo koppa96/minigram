@@ -1,0 +1,16 @@
+﻿version: '3.4'
+
+services:
+  postgres:
+    container_name: minigram.postgres
+    image: postgres:13
+    ports:
+      - 5432:5432 
+    environment:
+      - POSTGRES_PASSWORD=Password123
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data 
+
+volumes:
+  postgres_data:
