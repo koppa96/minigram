@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Minigram.Application.Abstractions.Services.Notification
 {
-    public interface INotificationService<TClient>
+    public interface INotificationService<out TClient>
     {
-        NotificationBuilder<TClient> NotifyUser(Guid userId);
-        NotificationBuilder<TClient> NotifyUsers(IEnumerable<Guid> userIds);
-        NotificationBuilder<TClient> NotifyUsers(params Guid[] userIds);
-        Task SendAsync(NotificationBuilder<TClient> notificationBuilder);
+        TClient User(Guid userId);
+        TClient Users(IEnumerable<Guid> userIds);
+        TClient Users(params Guid[] userIds);
     }
 }

@@ -19,28 +19,20 @@ namespace Minigram.Api.Services
             this.hubContext = hubContext;
         }
         
-        public NotificationBuilder<TSubClient> NotifyUser(Guid userId)
+        public TSubClient User(Guid userId)
         {
-            return new(EnumerableExtensions.From(userId), this);
+            return hubContext.Clients.User(userId.ToString());
         }
 
-        public NotificationBuilder<TSubClient> NotifyUsers(IEnumerable<Guid> userIds)
+        public TSubClient Users(IEnumerable<Guid> userIds)
         {
-            return new(userIds, this);
+            return hubContext.Clients.Users(userIds.Select(x => x.ToString()));
         }
 
-        public NotificationBuilder<TSubClient> NotifyUsers(params Guid[] userIds)
+        public TSubClient Users(params Guid[] userIds)
         {
-            return new(userIds, this);
-        }
-
-        public async Task SendAsync(NotificationBuilder<TSubClient> notificationBuilder)
-        {
-            var userRefs = hubContext.Clients.Users(notificationBuilder.UserIds.Select(x => x.ToString()));
-            foreach (var callback in notificationBuilder.Callbacks)
-            {
-                await callback(userRefs);
-            }
+            // Avoid recursion, call .AsEnumerable()
+            return Users(userIds.AsEnumerable());
         }
     }
 }

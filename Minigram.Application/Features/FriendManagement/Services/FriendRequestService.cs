@@ -71,9 +71,8 @@ namespace Minigram.Application.Features.FriendManagement.Services
 
             var dto = mapper.Map<FriendRequestDto>(request);
             
-            await notificationService.NotifyUser(recipientId)
-                .That(x => x.FriendRequestCreated(dto))
-                .SendAsync();
+            await notificationService.User(recipientId)
+                .FriendRequestCreated(dto);
             
             return dto;
         }
@@ -91,11 +90,10 @@ namespace Minigram.Application.Features.FriendManagement.Services
             context.FriendRequests.Remove(request);
             await context.SaveChangesAsync(cancellationToken);
 
-            await notificationService.NotifyUser(identityService.CurrentUserId == request.SenderId
+            await notificationService.User(identityService.CurrentUserId == request.SenderId
                     ? request.RecipientId
                     : request.SenderId)
-                .That(x => x.FriendRequestDeleted(requestId))
-                .SendAsync();
+                .FriendRequestDeleted(requestId);
         }
     }
 }

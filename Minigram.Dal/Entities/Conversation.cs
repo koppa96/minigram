@@ -7,7 +7,7 @@ namespace Minigram.Dal.Entities
     public class Conversation : IEntity
     {
         public Guid Id { get; set; }
-        public string Title { get; set; }
+        public string Name { get; set; }
         
         public virtual ICollection<ConversationMembership> ConversationMemberships { get; set; }
     }

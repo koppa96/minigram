@@ -10,7 +10,7 @@ using Minigram.Application.Extensions;
 using Minigram.Application.Features.FriendManagement.Interface.Clients;
 using Minigram.Application.Features.FriendManagement.Interface.Dtos;
 using Minigram.Application.Features.FriendManagement.Interface.Services;
-using Minigram.Application.Features.Users.Dtos;
+using Minigram.Application.Features.Users.Interface.Dtos;
 using Minigram.Dal;
 using Minigram.Dal.Entities;
 using Minigram.Dal.Extensions;
@@ -70,8 +70,8 @@ namespace Minigram.Application.Features.FriendManagement.Services
             context.FriendRequests.Remove(request);
             await context.SaveChangesAsync(cancellationToken);
 
-            await notificationService.NotifyUser(request.SenderId)
-                .That(x => x.FriendshipCreated(new FriendshipDto
+            await notificationService.User(request.SenderId)
+                .FriendshipCreated(new FriendshipDto
                 {
                     Id = friendship.Id,
                     Friend = new UserListDto
@@ -79,8 +79,7 @@ namespace Minigram.Application.Features.FriendManagement.Services
                         Id = request.RecipientId,
                         UserName = request.Recipient.UserName
                     }
-                }))
-                .SendAsync();
+                });
             
             return new FriendshipDto
             {
@@ -105,11 +104,10 @@ namespace Minigram.Application.Features.FriendManagement.Services
             context.Friendships.Remove(friendship);
             await context.SaveChangesAsync(cancellationToken);
 
-            await notificationService.NotifyUser(friendship.User1Id == identityService.CurrentUserId
+            await notificationService.User(friendship.User1Id == identityService.CurrentUserId
                     ? friendship.User2Id
                     : friendship.User1Id)
-                .That(x => x.FriendshipDeleted(friendshipId))
-                .SendAsync();
+                .FriendshipDeleted(friendshipId);
         }
     }
 }

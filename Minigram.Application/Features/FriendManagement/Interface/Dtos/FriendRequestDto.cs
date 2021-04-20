@@ -1,5 +1,5 @@
 ﻿using System;
-using Minigram.Application.Features.Users.Dtos;
+using Minigram.Application.Features.Users.Interface.Dtos;
 
 namespace Minigram.Application.Features.FriendManagement.Interface.Dtos
 {

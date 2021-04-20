@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Minigram.Application.Features.Users.Dtos
+namespace Minigram.Application.Features.Users.Interface.Dtos
 {
     public class UserListDto
     {
