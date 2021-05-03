@@ -2,7 +2,7 @@
 using Minigram.Application.Features.Conversations.Interface.Dtos;
 using Minigram.Dal.Entities;
 
-namespace Minigram.Application.Features.Conversations.Interface.Mapping
+namespace Minigram.Application.Features.Conversations.Mapping
 {
     public class ConversationMapping : Profile
     {

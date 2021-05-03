@@ -97,6 +97,7 @@ namespace Minigram.Application.Features.Conversations.Services
         {
             var membership = await context.ConversationMemberships.Include(x => x.Conversation)
                     .ThenInclude(x => x.ConversationMemberships)
+                        .ThenInclude(x => x.Member)
                 .FindByIdAsync(id, cancellationToken);
 
             if (membership.MemberId != identityService.CurrentUserId &&
@@ -112,7 +113,9 @@ namespace Minigram.Application.Features.Conversations.Services
             await notificationService.User(membership.MemberId)
                 .RemovedFromConversation(id);
 
-
+            await notificationService.Users(membership.Conversation.ConversationMemberships.Where(x => x != membership)
+                    .Select(x => x.MemberId))
+                .ConversationUpdated(mapper.Map<ConversationDetailsDto>(membership.Conversation));
         }
     }
 }

@@ -2,7 +2,7 @@
 using Minigram.Application.Features.Users.Interface.Dtos;
 using Minigram.Dal.Entities;
 
-namespace Minigram.Application.Features.Users.Interface.Mapping
+namespace Minigram.Application.Features.Users.Mapping
 {
     public class UserMapping : Profile
     {
