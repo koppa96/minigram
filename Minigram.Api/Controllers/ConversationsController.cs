@@ -48,7 +48,7 @@ namespace Minigram.Api.Controllers
             return CreatedAtAction(nameof(GetConversationDetailsAsync), new { conversationId = conversation.Id }, conversation);
         }
         
-        [HttpPost]
+        [HttpPost("members")]
         [Authorize(Conversations.Manage)]
         public async Task<ActionResult<ConversationMembershipDto>> AddMemberAsync(Guid conversationId,
             [FromBody] ConversationMembershipCreateDto dto, CancellationToken cancellationToken)

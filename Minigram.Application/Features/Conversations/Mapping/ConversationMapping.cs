@@ -10,7 +10,8 @@ namespace Minigram.Application.Features.Conversations.Mapping
         public ConversationMapping()
         {
             CreateMap<Conversation, ConversationListDto>()
-                .ForMember(x => x.LastMessage, o => o.MapFrom(x => x.ConversationMemberships.SelectMany(m => m.SentMessages)
+                .ForMember(x => x.LastMessage, o => o.MapFrom(x => x.ConversationMemberships
+                    .SelectMany(m => m.SentMessages)
                     .OrderByDescending(m => m.CreatedAt)
                     .FirstOrDefault()));
             CreateMap<Conversation, ConversationDetailsDto>();

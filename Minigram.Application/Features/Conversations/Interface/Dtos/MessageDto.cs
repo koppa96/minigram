@@ -8,6 +8,6 @@ namespace Minigram.Application.Features.Conversations.Interface.Dtos
         public Guid Id { get; set; }
         public string Text { get; set; }
         public UserListDto Sender { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
     }
 }
