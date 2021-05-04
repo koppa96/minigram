@@ -1,0 +1,65 @@
+﻿@page
+@model Minigram.IdentityProvider.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "Bejelentkezés";
+    Layout = "_Layout";
+}
+
+@using Microsoft.AspNetCore.Http.Extensions
+@using System.Web
+
+<main class="container vh-100">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-12 col-md-9 col-lg-7 p-4 nb-card">
+            <h3>Bejelentkezés</h3>
+
+            @if (Model.Errors.Count > 0)
+            {
+                <div class="alert alert-danger">
+                    @foreach (var error in Model.Errors)
+                    {
+                        <p class="m-0">@error</p>
+                    }
+                </div>
+            }
+
+            <form method="post" class="w-100">
+                <input type="hidden" asp-for="ReturnUrl" />
+
+                <div class="row">
+                    <div class="col-12">
+                        <label asp-for="Username">Felhasználónév</label><br>
+                        <input class="nb-textbox w-100" type="text" placeholder="A felhasználóneved" asp-for="Username" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <label asp-for="Password">Jelszó</label><br>
+                        <input class="nb-textbox w-100" type="password" placeholder="A jelszavad" asp-for="Password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" asp-for="RememberMe">
+                            <input type="checkbox" class="mdl-checkbox__input" asp-for="RememberMe"/>
+                            <span>Emlékezz rám!</span>
+                        </label>
+                    </div>
+                </div>
+
+                <a class="mt-3 login-nav-link" href="@Url.Page("/Account/GetPasswordReset", new { returnUrl = Request.GetEncodedUrl() })">Elfelejtett jelszó</a><br />
+                <a class="mt-3 login-nav-link" href="@Url.Page("/Account/ConfirmEmail", new { returnUrl = Request.GetEncodedUrl(), resend = true })">Megerősítő e-mail újraküldése</a>
+
+                <div class="d-flex justify-content-between flex-row-reverse mt-4">
+                    <button name="action" value="login" class="button-full">Bejelentkezés</button>
+                    <button name="action" value="register" class="button-ghost">Fiók létrehozása</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+

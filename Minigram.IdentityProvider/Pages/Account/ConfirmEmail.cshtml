@@ -1,0 +1,81 @@
+﻿@page
+@model Minigram.IdentityProvider.Pages.Account.ConfirmEmailModel
+@{
+    ViewData["Title"] = "ConfirmEmail";
+    Layout = "_Layout";
+}
+
+<main class="container vh-100">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-12 col-md-9 col-lg-7 p-4 nb-card">
+            @if (Model.ConfirmSuccessful)
+            {
+                <div class="w-100 d-flex align-items-center flex-grow-1">
+                    <span class="material-icons-outlined action-result-icon">
+                        check
+                    </span>
+                    <div class="d-flex flex-column ml-4">
+                        <h3>Sikeres megerősítés!</h3>
+                        <p>Az e-mail címedet sikeresen megerősítetted, mostantól bejelentkezhetsz.</p>
+                    </div>
+                </div>
+            }
+            @if (!Model.ConfirmSuccessful && !Model.SendSuccessful)
+            {
+                <div class="w-100 d-flex align-items-center flex-grow-1">
+                    @if (!Model.Resend)
+                    {
+                        <span class="material-icons-outlined action-result-icon">
+                            close
+                        </span>
+                    }
+                    <div class="d-flex flex-column ml-4 flex-grow-1">
+                        <h3>Megerősítő e-mail újraküldése</h3>
+                        @if (!Model.Resend)
+                        {
+                            <p>A linked alapján nem sikerült megerősítenünk az e-mail címed. Alább lehetőséged van új megerősítő e-mailt kérni.</p>
+                        }
+                        else
+                        {
+                            <p>Alább lehetőséged van új megerősítő e-mailt kérni.</p>
+                        }
+                        <form method="post" class="w-100">
+                            <input type="hidden" asp-for="Resend"/>
+                            <input type="hidden" asp-for="ReturnUrl" />
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <label asp-for="Email">E-mail</label><br>
+                                    <input class="nb-textbox w-100" type="email" placeholder="Az e-mail címed" asp-for="Email" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 d-flex @(Model.Resend ? "justify-content-between" :  "justify-content-end")">
+                                    @if (Model.Resend)
+                                    {
+                                        <button name="action" value="cancel" class="button-ghost">Vissza a bejelentkezéshez</button>
+                                    }
+                                    <button name="action" value="send" class="button-full">Újraküldés</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            }
+            @if (!Model.ConfirmSuccessful && Model.SendSuccessful)
+            {
+                <div class="w-100 d-flex align-items-center flex-grow-1">
+                    <span class="material-icons-outlined action-result-icon">
+                        mail
+                    </span>
+                    <div class="d-flex flex-column ml-4">
+                        <h3>Sikeres e-mail küldés!</h3>
+                        <p>Az új megerősítő e-mailed sikeresen elküldtük a megadott címre! Használd a benne található linket a fiókod megerősítéséhez.</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</main>
+

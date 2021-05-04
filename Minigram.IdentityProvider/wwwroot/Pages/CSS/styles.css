@@ -1,0 +1,161 @@
+﻿.card-round {
+    border-radius: 15px;
+}
+
+body {
+    background-image: linear-gradient(to right, #598bff, #3366ff);
+}
+
+.nb-card {
+    background-color: #ffffff;
+    border: 0.0625rem solid #e4e9f2;
+    border-radius: 0.25rem;
+    box-shadow: none;
+    color: #222b45;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+    padding: 0.6875rem 1rem;
+}
+
+label {
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.nb-textbox {
+    border-radius: 0.25rem;
+    background-color: #f7f9fc;
+    border-color: #e4e9f2;
+    color: #222b45;
+    transition-duration: 0.15s;
+    transition-property: border, background-color, color, box-shadow;
+    transition-timing-function: ease-in;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+    padding: 0.8375rem 1rem;
+    border-style: solid;
+    border-width: 1px;
+    font-family: Open Sans, sans-serif;
+}
+
+.nb-textbox:hover {
+    background-color: #edf1f7;
+    border-color: #e4e9f2;
+}
+
+.login-nav-link {
+    display: inline-block;
+    text-decoration: none;
+    font-family: Open Sans, sans-serif;
+}
+
+a {
+    color: #3366ff;
+    text-decoration: underline;
+    font-size: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+}
+
+.button-full {
+    background-image: linear-gradient(to right, #598bff, #3366ff);
+    border: none;
+    box-shadow: 0 0 0 0 #274bdb, 0 0 0 0 #1a34b8, 0 0 transparent;
+    color: #ffffff;
+    padding: 0.75rem 1.1875rem;
+    text-transform: uppercase;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    line-height: 1rem;
+    transition-duration: .15s;
+    transition-timing-function: ease-in;
+    margin: 0.5rem;
+    cursor: pointer;
+    font-family: Open Sans, sans-serif;
+    font-weight: 700;
+}
+
+    .button-full:hover {
+        background-image: linear-gradient(to right, #a6c1ff, #598bff);
+        border: none;
+        box-shadow: 0 0 0 0 #274bdb, 0 0 0 0 #1a34b8, 0 0 transparent;
+        color: #ffffff;
+        padding: 0.75rem 1.1875rem;
+        text-transform: uppercase;
+        border-radius: 0.25rem;
+        font-size: 0.875rem;
+        line-height: 1rem;
+        margin: 0.5rem;
+        cursor: pointer;
+        font-family: Open Sans, sans-serif;
+        font-weight: 700;
+    }
+
+.button-ghost {
+    border: none;
+    background-color: transparent;
+    color: #3366ff;
+    text-transform: uppercase;
+    padding: 0.75rem 1.1875rem;
+    font-size: 0.875rem;
+    line-height: 1rem;
+    margin: 0.5rem;
+    cursor: pointer;
+    font-family: Open Sans, sans-serif;
+    font-weight: 700;
+}
+
+.login-nav-link:hover {
+    text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6, p, span, button.poppins {
+    font-family: Open Sans, sans-serif;
+}
+
+button.poppins {
+    font-weight: 600;
+}
+
+.action-result-icon {
+    font-size: 75px !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+}
+
+:root {
+    --pure-material-primary-rgb: 63, 81, 181;
+}
+
+button {
+    outline: none !important;
+}
+
+.czeum-logo-container {
+    color: white;
+}
+
+.czeum-logo-container .czeum-icon {
+    font-size: 75px !important;
+}
+
+.czeum-logo-container .logo-text {
+    margin-left: 10px;
+}
+
+.czeum-logo-container .logo-text h1 {
+    font-size: 30px;
+    letter-spacing: 5px;
+    margin: 0;
+}
+
+.czeum-logo-container .logo-text p {
+    margin: 0;
+    font-size: 12px;
+}

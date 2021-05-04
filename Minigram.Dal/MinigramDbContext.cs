@@ -30,7 +30,7 @@ namespace Minigram.Dal
 
                 friendship.HasOne(x => x.User2)
                     .WithMany(x => x.Friendships2)
-                    .HasForeignKey(x => x.User2);
+                    .HasForeignKey(x => x.User2Id);
 
                 friendship.HasIndex(x => new
                 {

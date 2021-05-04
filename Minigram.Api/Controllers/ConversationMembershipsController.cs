@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Minigram.Api.Resources.AuthorizationConstants.Scopes;
 using Minigram.Application.Features.Conversations.Interface.Dtos;
 using Minigram.Application.Features.Conversations.Interface.Services;
 
@@ -11,7 +12,7 @@ namespace Minigram.Api.Controllers
     [Route("api/conversations/{conversationId}/memberships/{membershipId}")]
     [Route("api/memberships/{membershipId}")]
     [ApiController]
-    [Authorize]
+    [Authorize(Conversations.Manage)]
     public class ConversationMembershipsController : ControllerBase
     {
         private readonly IConversationMemberService conversationMemberService;

@@ -1,0 +1,26 @@
+﻿@page
+@model Minigram.IdentityProvider.Pages.Account.LogoutModel
+@{
+    ViewData["Title"] = "Logout";
+    Layout = "_Layout";
+}
+
+
+<main class="container vh-100">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-12 col-md-9 col-lg-7 p-4 nb-card">
+            <h3>Kijelentkezés</h3>
+            <form method="post" class="w-100">
+                <input type="hidden" asp-for="LogoutId" />
+
+                <p>Biztosan ki szeretne jelentkezni?</p>
+
+                <div class="d-flex justify-content-between mt-3">
+                    <button name="action" type="submit" class="button-ghost" value="cancel">Mégse</button>
+                    <button name="action" type="submit" class="button-full" value="logout">Kijelentkezés</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+

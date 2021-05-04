@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using static Minigram.Api.Resources.AuthorizationConstants;
+using Minigram.Dal;
 
 namespace Minigram.Api
 {
@@ -23,7 +23,44 @@ namespace Minigram.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<MinigramDbContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            
             services.AddControllers();
+
+            services.AddAuthentication()
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = Configuration.GetValue<string>("Authentication:Authority");
+                    options.Audience = Configuration.GetValue<string>("Authentication:Audience");
+                    options.RequireHttpsMetadata = false;
+                });
+
+            services.AddAuthorization(options =>
+            {
+                // There is no role based authorization in the app, as all users are in the same role
+                // But there is a scope based authorization.
+                // The client app can only execute the request 
+                options.AddPolicy(Scopes.Friendships.Read, policy => policy.RequireAuthenticatedUser()
+                    .RequireClaim(ScopeClaimType, Scopes.Friendships.Read)
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme));
+                
+                options.AddPolicy(Scopes.Friendships.Manage, policy => policy.RequireAuthenticatedUser()
+                    .RequireClaim(ScopeClaimType, Scopes.Friendships.Manage)
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme));
+                
+                options.AddPolicy(Scopes.Conversations.Read, policy => policy.RequireAuthenticatedUser()
+                    .RequireClaim(ScopeClaimType, Scopes.Conversations.Read)
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme));
+                
+                options.AddPolicy(Scopes.Conversations.Manage, policy => policy.RequireAuthenticatedUser()
+                    .RequireClaim(ScopeClaimType, Scopes.Conversations.Manage)
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme));
+
+                options.DefaultPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                    .Build();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

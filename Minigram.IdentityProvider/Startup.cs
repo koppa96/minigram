@@ -8,6 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Minigram.Dal;
+using Minigram.Dal.Entities;
 
 namespace Minigram.IdentityProvider
 {
@@ -23,6 +27,29 @@ namespace Minigram.IdentityProvider
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<MinigramDbContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            
+            services.AddIdentity<MinigramUser, IdentityRole<Guid>>()
+                .AddDefaultTokenProviders()
+                .AddEntityFrameworkStores<MinigramDbContext>();
+
+            services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
+                .AddConfigurationStore(options =>
+                {
+                    options.ConfigureDbContext = builder =>
+                        builder.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
+                            sql => sql.MigrationsAssembly(typeof(MinigramDbContext).Assembly.GetName().Name));
+                })
+                .AddOperationalStore(options =>
+                {
+                    options.ConfigureDbContext = builder =>
+                        builder.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
+                            sql => sql.MigrationsAssembly(typeof(MinigramDbContext).Assembly.GetName().Name));
+                })
+                .AddAspNetIdentity<MinigramUser>();
+            
             services.AddRazorPages();
         }
 
@@ -43,8 +70,11 @@ namespace Minigram.IdentityProvider
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseIdentityServer();
+
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
