@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -13,6 +14,8 @@ namespace Minigram.Api.Controllers
 {
     [Route("api/friend-requests")]
     [ApiController]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public class FriendRequestsController : ControllerBase
     {
         private readonly IFriendRequestService friendRequestService;
@@ -24,7 +27,11 @@ namespace Minigram.Api.Controllers
 
         [HttpGet("sent")]
         [Authorize(Friendships.Read)]
-        public Task<PagedListDto<FriendRequestDto>> ListSentRequestsAsync(int pageIndex = 0, int pageSize = 25,
+        [Description("List sent friend requests")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public Task<PagedListDto<FriendRequestDto>> ListSentRequestsAsync(
+            [Description("The index of the page")] [FromQuery] int pageIndex = 0,
+            [Description("The amount of items per page")] [FromQuery] int pageSize = 25,
             CancellationToken cancellationToken = default)
         {
             return friendRequestService.ListSentRequestsAsync(pageIndex, pageSize, cancellationToken);
@@ -32,7 +39,11 @@ namespace Minigram.Api.Controllers
 
         [HttpGet("received")]
         [Authorize(Friendships.Read)]
-        public Task<PagedListDto<FriendRequestDto>> ListReceivedRequestsAsync(int pageIndex = 0, int pageSize = 25,
+        [Description("List received friend requests")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public Task<PagedListDto<FriendRequestDto>> ListReceivedRequestsAsync(
+            [Description("The index of the page")] [FromQuery] int pageIndex = 0,
+            [Description("The amount of items per page")] [FromQuery] int pageSize = 25,
             CancellationToken cancellationToken = default)
         {
             return friendRequestService.ListReceivedRequestsAsync(pageIndex, pageSize, cancellationToken);
@@ -40,7 +51,10 @@ namespace Minigram.Api.Controllers
 
         [HttpPost]
         [Authorize(Friendships.Manage)]
-        public async Task<ActionResult<FriendRequestDto>> SendRequestAsync([FromBody] FriendRequestCreateDto dto,
+        [Description("Send a new friend request")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public async Task<ActionResult<FriendRequestDto>> SendRequestAsync(
+            [Description("The details of the friend request")] [FromBody] FriendRequestCreateDto dto,
             CancellationToken cancellationToken)
         {
             var request = await friendRequestService.SendRequestAsync(dto.RecipientId, cancellationToken);
@@ -49,7 +63,11 @@ namespace Minigram.Api.Controllers
 
         [HttpDelete("{requestId}")]
         [Authorize(Friendships.Manage)]
-        public async Task<ActionResult> DeleteRequestAsync(Guid requestId, CancellationToken cancellationToken)
+        [Description("Delete a friend request")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> DeleteRequestAsync(
+            [Description("The id of the friend request")] Guid requestId,
+            CancellationToken cancellationToken)
         {
             await friendRequestService.DeleteRequestAsync(requestId, cancellationToken);
             return NoContent();

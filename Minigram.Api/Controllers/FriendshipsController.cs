@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -13,6 +14,8 @@ namespace Minigram.Api.Controllers
 {
     [Route("api/friendships")]
     [ApiController]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public class FriendshipsController : ControllerBase
     {
         private readonly IFriendService friendService;
@@ -24,7 +27,11 @@ namespace Minigram.Api.Controllers
 
         [HttpGet]
         [Authorize(Friendships.Read)]
-        public Task<PagedListDto<FriendshipDto>> ListFriendsAsync(int pageIndex = 0, int pageSize = 25,
+        [Description("List friends")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public Task<PagedListDto<FriendshipDto>> ListFriendsAsync(
+            [Description("The index of the page")] [FromQuery] int pageIndex = 0,
+            [Description("The amount of items per page")] [FromQuery] int pageSize = 25,
             CancellationToken cancellationToken = default)
         {
             return friendService.ListFriendshipsAsync(pageIndex, pageSize, cancellationToken);
@@ -32,7 +39,10 @@ namespace Minigram.Api.Controllers
 
         [HttpPost]
         [Authorize(Friendships.Manage)]
-        public async Task<ActionResult<FriendshipDto>> CreateFriendshipAsync([FromBody] FriendshipCreateDto dto,
+        [Description("Accept a friend request")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public async Task<ActionResult<FriendshipDto>> CreateFriendshipAsync(
+            [Description("The details of the friendship")] [FromBody] FriendshipCreateDto dto,
             CancellationToken cancellationToken)
         {
             var friendship = await friendService.CreateFriendshipAsync(dto.RequestId, cancellationToken);
@@ -41,7 +51,11 @@ namespace Minigram.Api.Controllers
 
         [HttpDelete("{friendshipId}")]
         [Authorize(Friendships.Manage)]
-        public async Task<ActionResult> DeleteFriendshipAsync(Guid friendshipId, CancellationToken cancellationToken)
+        [Description("Delete a friendship")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> DeleteFriendshipAsync(
+            [Description("The id of the friendship")] Guid friendshipId,
+            CancellationToken cancellationToken)
         {
             await friendService.DeleteFriendshipAsync(friendshipId, cancellationToken);
             return NoContent();

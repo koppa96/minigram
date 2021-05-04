@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -13,6 +14,8 @@ namespace Minigram.Api.Controllers
 {
     [Route("api/conversations")]
     [ApiController]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public class ConversationsController : ControllerBase
     {
         private readonly IConversationService conversationService;
@@ -26,7 +29,11 @@ namespace Minigram.Api.Controllers
 
         [HttpGet]
         [Authorize(Conversations.Read)]
-        public Task<PagedListDto<ConversationListDto>> ListConversationsAsync([FromQuery] int pageIndex = 0, [FromQuery] int pageSize = 25,
+        [Description("List the conversations the user is currently the member of")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public Task<PagedListDto<ConversationListDto>> ListConversationsAsync(
+            [Description("The index of the page")] [FromQuery] int pageIndex = 0,
+            [Description("The amount of items per page")] [FromQuery] int pageSize = 25,
             CancellationToken cancellationToken = default)
         {
             return conversationService.ListConversationsAsync(pageIndex, pageSize, cancellationToken);
@@ -34,15 +41,22 @@ namespace Minigram.Api.Controllers
 
         [HttpGet("{conversationId}")]
         [Authorize(Conversations.Read)]
-        public Task<ConversationDetailsDto> GetConversationDetailsAsync(Guid conversationId, CancellationToken cancellationToken)
+        [Description("View the details of a specific conversation")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public Task<ConversationDetailsDto> GetConversationDetailsAsync(
+            [Description("The id of the conversation")] Guid conversationId,
+            CancellationToken cancellationToken)
         {
             return conversationService.GetConversationAsync(conversationId, cancellationToken);
         }
 
         [HttpPost]
         [Authorize(Conversations.Manage)]
+        [Description("Create a new conversation")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<ConversationDetailsDto>> CreateConversationAsync(
-            [FromBody] ConversationCreateEditDto dto, CancellationToken cancellationToken)
+            [Description("The details of the conversation")] [FromBody] ConversationCreateEditDto dto,
+            CancellationToken cancellationToken)
         {
             var conversation = await conversationService.CreateConversationAsync(dto, cancellationToken);
             return CreatedAtAction(nameof(GetConversationDetailsAsync), new { conversationId = conversation.Id }, conversation);
@@ -50,8 +64,12 @@ namespace Minigram.Api.Controllers
         
         [HttpPost("members")]
         [Authorize(Conversations.Manage)]
-        public async Task<ActionResult<ConversationMembershipDto>> AddMemberAsync(Guid conversationId,
-            [FromBody] ConversationMembershipCreateDto dto, CancellationToken cancellationToken)
+        [Description("Add a member to the conversation")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public async Task<ActionResult<ConversationMembershipDto>> AddMemberAsync(
+            [Description("The id of the conversation")] Guid conversationId,
+            [Description("The details of the membership")] [FromBody] ConversationMembershipCreateDto dto,
+            CancellationToken cancellationToken)
         {
             var membership = await conversationMemberService.AddMembershipAsync(conversationId, dto.UserId, cancellationToken);
             
@@ -61,15 +79,21 @@ namespace Minigram.Api.Controllers
 
         [HttpPut("{conversationId}")]
         [Authorize(Conversations.Manage)]
-        public Task<ConversationDetailsDto> UpdateConversationAsync(Guid conversationId,
-            [FromBody] ConversationCreateEditDto dto, CancellationToken cancellationToken)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public Task<ConversationDetailsDto> UpdateConversationAsync(
+            [Description("The id of the conversation")] Guid conversationId,
+            [Description("The details of the conversation")] [FromBody] ConversationCreateEditDto dto,
+            CancellationToken cancellationToken)
         {
             return conversationService.UpdateConversationAsync(conversationId, dto, cancellationToken);
         }
 
         [HttpDelete("{conversationId}")]
         [Authorize(Conversations.Manage)]
-        public async Task<ActionResult> DeleteConversationAsync(Guid conversationId, CancellationToken cancellationToken)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> DeleteConversationAsync(
+            [Description("The id of the conversation")] Guid conversationId,
+            CancellationToken cancellationToken)
         {
             await conversationService.DeleteConversationAsync(conversationId, cancellationToken);
             return NoContent();
