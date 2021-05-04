@@ -1,0 +1,47 @@
+﻿@page
+@model Minigram.IdentityProvider.Pages.Consent
+
+@{
+    ViewData["Title"] = "Hozzájárulás";
+    Layout = "_Layout";
+}
+
+<main class="container vh-100">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-12 col-md-9 col-lg-7 p-4 nb-card">
+            <h3>Hozzájárulás</h3>
+
+            <p><strong>@Model.ClientName</strong> szeretne hozzáférni az alábbi jogosultságokhoz:</p>
+
+            <form method="post" class="w-100">
+                <input type="hidden" asp-for="ReturnUrl"/>
+
+                @for (int i = 0; i < Model.ApiScopes.Count; i++)
+                {
+                    <div class="d-flex align-items-center mb-2">
+                        <input type="hidden" asp-for="ApiScopes[i].ApiScope.Name">
+                        <input type="checkbox" asp-for="ApiScopes[i].Consented">
+                        <div class="ml-2">
+                            <h6 class="m-0">@Model.ApiScopes[i].ApiScope.DisplayName</h6>
+                            <p class="m-0">@Model.ApiScopes[i].ApiScope.Description</p>
+                        </div>
+                    </div>
+                }
+
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" asp-for="Remember">
+                            <input type="checkbox" class="mdl-checkbox__input" asp-for="Remember"/>
+                            <span>Hozzájárulás megjegyzése</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between flex-row-reverse mt-4">
+                    <button name="action" value="consent" class="button-full">Hozzájárulás</button>
+                    <button name="action" value="back" class="button-ghost">Mégse</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
