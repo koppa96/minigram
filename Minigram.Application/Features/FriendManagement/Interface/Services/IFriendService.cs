@@ -13,6 +13,6 @@ namespace Minigram.Application.Features.FriendManagement.Interface.Services
 
         Task<FriendshipDto> CreateFriendshipAsync(Guid requestId, CancellationToken cancellationToken = default);
 
-        Task DeleteFriendship(Guid friendshipId, CancellationToken cancellationToken = default);
+        Task DeleteFriendshipAsync(Guid friendshipId, CancellationToken cancellationToken = default);
     }
 }

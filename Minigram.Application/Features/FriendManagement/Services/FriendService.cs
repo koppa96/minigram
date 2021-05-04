@@ -92,7 +92,7 @@ namespace Minigram.Application.Features.FriendManagement.Services
             };
         }
 
-        public async Task DeleteFriendship(Guid friendshipId, CancellationToken cancellationToken = default)
+        public async Task DeleteFriendshipAsync(Guid friendshipId, CancellationToken cancellationToken = default)
         {
             var friendship = await context.Friendships.FindByIdAsync(friendshipId, cancellationToken);
             if (friendship.User1Id != identityService.CurrentUserId &&
