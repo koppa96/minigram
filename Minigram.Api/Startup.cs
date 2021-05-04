@@ -39,8 +39,8 @@ namespace Minigram.Api
             services.AddAuthorization(options =>
             {
                 // There is no role based authorization in the app, as all users are in the same role
-                // But there is a scope based authorization.
-                // The client app can only execute the request 
+                // But there is a scope based authorization for the clients.
+                // The client app can only execute the request if it has the required scope
                 options.AddPolicy(Scopes.Friendships.Read, policy => policy.RequireAuthenticatedUser()
                     .RequireClaim(ScopeClaimType, Scopes.Friendships.Read)
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme));
