@@ -25,6 +25,8 @@ namespace Minigram.Application.Features.Users.Services
         public Task<List<UserListDto>> ListUsersAsync(string searchText, CancellationToken cancellationToken = default)
         {
             return context.Users.Where(x => x.UserName.ToLower().Contains(searchText.ToLower()))
+                .OrderBy(x => x.UserName)
+                .Take(25)
                 .ProjectTo<UserListDto>(configurationProvider)
                 .ToListAsync(cancellationToken);
         }

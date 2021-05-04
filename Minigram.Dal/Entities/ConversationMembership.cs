@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Minigram.Dal.Abstractions;
 
 namespace Minigram.Dal.Entities
@@ -14,5 +15,7 @@ namespace Minigram.Dal.Entities
         public virtual Conversation Conversation { get; set; }
 
         public bool IsAdmin { get; set; }
+
+        public virtual ICollection<Message> SentMessages { get; set; }
     }
 }
