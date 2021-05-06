@@ -55,6 +55,14 @@ namespace Minigram.Api
                     options.RequireHttpsMetadata = false;
                 });
 
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy => policy.WithOrigins(Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>())
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials());
+            });
+
             services.AddAuthorization(options =>
             {
                 // There is no role based authorization in the app, as all users are in the same role
@@ -90,6 +98,7 @@ namespace Minigram.Api
             {
                 config.Title = "Minigram API";
                 config.Description = "A minimalistic message server API that supports group chats.";
+                config.DocumentName = "Minigram";
 
                 config.AddSecurity("OAuth2", new OpenApiSecurityScheme
                 {
@@ -146,6 +155,7 @@ namespace Minigram.Api
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCors();
             
             app.UseOpenApi();
             app.UseSwaggerUi3(config =>

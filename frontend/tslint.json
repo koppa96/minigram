@@ -70,7 +70,7 @@
     ],
     "semicolon": {
       "options": [
-        "always"
+        "never"
       ]
     },
     "space-before-function-paren": {
@@ -83,8 +83,7 @@
       }
     },
     "typedef": [
-      true,
-      "call-signature"
+      true
     ],
     "typedef-whitespace": {
       "options": [
@@ -147,6 +146,7 @@
       "element",
       "app",
       "kebab-case"
-    ]
+    ],
+    "no-trailing-whitespace": false
   }
 }
