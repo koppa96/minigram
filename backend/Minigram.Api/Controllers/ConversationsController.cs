@@ -43,11 +43,11 @@ namespace Minigram.Api.Controllers
         [Authorize(Conversations.Read)]
         [Description("View the details of a specific conversation")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public Task<ConversationDetailsDto> GetConversationDetailsAsync(
+        public async Task<ActionResult<ConversationDetailsDto>> GetConversationDetailsAsync(
             [Description("The id of the conversation")] Guid conversationId,
             CancellationToken cancellationToken)
         {
-            return conversationService.GetConversationAsync(conversationId, cancellationToken);
+            return Ok(await conversationService.GetConversationAsync(conversationId, cancellationToken));
         }
 
         [HttpPost]
@@ -59,7 +59,7 @@ namespace Minigram.Api.Controllers
             CancellationToken cancellationToken)
         {
             var conversation = await conversationService.CreateConversationAsync(dto, cancellationToken);
-            return CreatedAtAction(nameof(GetConversationDetailsAsync), new { conversationId = conversation.Id }, conversation);
+            return CreatedAtAction("GetConversationDetails", new { conversationId = conversation.Id }, conversation);
         }
         
         [HttpPost("members")]

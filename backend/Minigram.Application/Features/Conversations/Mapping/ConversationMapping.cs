@@ -14,7 +14,8 @@ namespace Minigram.Application.Features.Conversations.Mapping
                     .SelectMany(m => m.SentMessages)
                     .OrderByDescending(m => m.CreatedAt)
                     .FirstOrDefault()));
-            CreateMap<Conversation, ConversationDetailsDto>();
+            CreateMap<Conversation, ConversationDetailsDto>()
+                .ForMember(x => x.Memberships, o => o.MapFrom(x => x.ConversationMemberships));
             CreateMap<ConversationMembership, ConversationMembershipDto>();
         }
     }
