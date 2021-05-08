@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+
+  button {
+    margin: 0 10px;
+  }
+
+  span {
+    color: lightgray;
+  }
+
+  .stats-container {
+    display: flex;
+    flex-direction: column;
+  }
+}

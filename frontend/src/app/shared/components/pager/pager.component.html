@@ -1,0 +1,13 @@
+<div class="container">
+  <button nbButton ghost [disabled]="!model || model.pageIndex === 0" (click)="loadPage.emit(model.pageIndex - 1)">
+    <nb-icon icon="arrow-ios-back-outline"></nb-icon>
+  </button>
+  <span>{{ (model?.pageIndex !== undefined && model?.pageIndex !== null) ? model.pageIndex + 1 : 0 }} / {{ model?.totalPages | default:0 }}</span>
+  <button nbButton ghost [disabled]="!model || model.pageIndex === model.totalPages - 1" (click)="loadPage.emit(model.pageIndex + 1)">
+    <nb-icon icon="arrow-ios-forward-outline"></nb-icon>
+  </button>
+  <div class="stats-container">
+    <span>Oldalankénti találatok: {{ model?.pageSize | default:0 }}</span>
+    <span>Összes találat: {{ model?.totalCount | default:0 }}</span>
+  </div>
+</div>
