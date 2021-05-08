@@ -1,9 +1,10 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core'
-import { Subject, Observable } from 'rxjs'
+import { Subject, Observable, merge } from 'rxjs'
 import { FriendRequestDto, FriendRequestsClient, FriendshipCreateDto, FriendshipsClient } from '../../../shared/clients'
 import { PagerModel } from '../../../shared/models/pager.model'
 import { map, share, switchMap, tap } from 'rxjs/operators'
 import { defaultPageSize } from '../../../shared/constants'
+import { HubService } from '../../../shared/services/hub.service'
 
 @Component({
   selector: 'app-sent-friend-requests',
@@ -12,15 +13,19 @@ import { defaultPageSize } from '../../../shared/constants'
 })
 export class SentFriendRequestsComponent implements AfterViewInit, OnDestroy {
   currentPage = 0
-  loadItems$ = new Subject<number>()
+  loadItems$ = new Subject<void>()
   requests$: Observable<FriendRequestDto[]>
   pager$: Observable<PagerModel>
 
   constructor(
-    private friendRequestsClient: FriendRequestsClient
+    private friendRequestsClient: FriendRequestsClient,
+    private hubService: HubService
   ) {
-    const response$ = this.loadItems$.pipe(
-      switchMap(pageIndex => this.friendRequestsClient.listReceivedRequests(pageIndex, defaultPageSize)),
+    const response$ = merge(
+      this.loadItems$,
+      hubService.friendRequestDeleted$
+    ).pipe(
+      switchMap(() => this.friendRequestsClient.listReceivedRequests(this.currentPage, defaultPageSize)),
       share()
     )
 
@@ -39,12 +44,12 @@ export class SentFriendRequestsComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.loadItems$.next(this.currentPage)
+    this.loadItems$.next()
   }
 
   loadPage(pageIndex: number) {
     this.currentPage = pageIndex
-    this.loadItems$.next(pageIndex)
+    this.loadItems$.next()
   }
 
   ngOnDestroy() {
@@ -53,7 +58,7 @@ export class SentFriendRequestsComponent implements AfterViewInit, OnDestroy {
 
   cancelFriendRequest(requestId: string) {
     this.friendRequestsClient.deleteRequest(requestId).subscribe(() => {
-      this.loadItems$.next(this.currentPage)
+      this.loadItems$.next()
     })
   }
 }

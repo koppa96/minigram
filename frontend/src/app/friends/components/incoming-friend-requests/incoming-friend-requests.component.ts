@@ -13,7 +13,7 @@ import { HubService } from '../../../shared/services/hub.service'
 })
 export class IncomingFriendRequestsComponent implements AfterViewInit, OnDestroy {
   currentPage = 0
-  loadItems$ = new Subject()
+  loadItems$ = new Subject<void>()
   requests$: Observable<FriendRequestDto[]>
   pager$: Observable<PagerModel>
 
@@ -22,7 +22,11 @@ export class IncomingFriendRequestsComponent implements AfterViewInit, OnDestroy
     private friendshipsClient: FriendshipsClient,
     private hubService: HubService
   ) {
-    const response$ = merge(this.loadItems$, hubService.friendRequestCreated$).pipe(
+    const response$ = merge(
+      this.loadItems$,
+      hubService.friendRequestCreated$,
+      hubService.friendRequestDeleted$
+    ).pipe(
       switchMap(() => this.friendRequestsClient.listReceivedRequests(this.currentPage, defaultPageSize)),
       share()
     )
@@ -42,7 +46,7 @@ export class IncomingFriendRequestsComponent implements AfterViewInit, OnDestroy
   }
 
   ngAfterViewInit() {
-    this.loadItems$.next(this.currentPage)
+    this.loadItems$.next()
   }
 
   loadPage(pageIndex: number) {

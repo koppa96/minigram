@@ -4,14 +4,16 @@ import { FriendListComponent } from './components/friend-list/friend-list.compon
 import { IncomingFriendRequestsComponent } from './components/incoming-friend-requests/incoming-friend-requests.component';
 import { SentFriendRequestsComponent } from './components/sent-friend-requests/sent-friend-requests.component'
 import { FriendsRoutingModule } from './friends-routing.module'
-import { NbButtonModule, NbCardModule, NbIconModule, NbListModule, NbUserModule } from '@nebular/theme'
-import { SharedModule } from '../shared/shared.module'
+import { NbButtonModule, NbCardModule, NbDialogModule, NbIconModule, NbListModule, NbUserModule } from '@nebular/theme'
+import { SharedModule } from '../shared/shared.module';
+import { NewFriendComponent } from './components/new-friend/new-friend.component'
 
 @NgModule({
   declarations: [
     FriendListComponent,
     IncomingFriendRequestsComponent,
-    SentFriendRequestsComponent
+    SentFriendRequestsComponent,
+    NewFriendComponent
   ],
   imports: [
     CommonModule,
@@ -21,7 +23,8 @@ import { SharedModule } from '../shared/shared.module'
     NbUserModule,
     NbButtonModule,
     NbIconModule,
-    SharedModule
+    SharedModule,
+    NbDialogModule.forChild()
   ]
 })
 export class FriendsModule { }

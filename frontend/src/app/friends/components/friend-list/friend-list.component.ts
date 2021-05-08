@@ -1,9 +1,10 @@
 import { AfterViewInit, Component, OnDestroy } from '@angular/core'
-import {  Observable, Subject } from 'rxjs'
+import { merge, Observable, Subject } from 'rxjs'
 import { FriendshipDto, FriendshipsClient } from '../../../shared/clients'
 import { map, share, switchMap } from 'rxjs/operators'
 import { PagerModel } from '../../../shared/models/pager.model'
 import { defaultPageSize } from '../../../shared/constants'
+import { HubService } from '../../../shared/services/hub.service'
 
 @Component({
   selector: 'app-friend-list',
@@ -12,13 +13,20 @@ import { defaultPageSize } from '../../../shared/constants'
 })
 export class FriendListComponent implements AfterViewInit, OnDestroy {
   currentPage = 0
-  loadItems$ = new Subject<number>()
+  loadItems$ = new Subject<void>()
   friendships$: Observable<FriendshipDto[]>
   pager$: Observable<PagerModel>
 
-  constructor(private client: FriendshipsClient) {
-    const response$ = this.loadItems$.pipe(
-      switchMap(pageIndex => client.listFriends(pageIndex, defaultPageSize)),
+  constructor(
+    private client: FriendshipsClient,
+    private hubService: HubService
+  ) {
+    const response$ = merge(
+      this.loadItems$,
+      hubService.friendshipCreated$,
+      hubService.friendshipDeleted$
+    ).pipe(
+      switchMap(() => client.listFriends(this.currentPage, defaultPageSize)),
       share()
     )
 
@@ -37,20 +45,17 @@ export class FriendListComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    console.log('ngAfterViewInit')
-    this.loadItems$.next(this.currentPage)
+    this.loadItems$.next()
   }
 
   loadPage(pageIndex: number) {
     this.currentPage = pageIndex
-    console.log('loadPage')
-    this.loadItems$.next(pageIndex)
+    this.loadItems$.next()
   }
 
   deleteFriendship(friendshipId: string) {
     this.client.deleteFriendship(friendshipId).subscribe(() => {
-      console.log('deleteFriendship')
-      this.loadItems$.next(this.currentPage)
+      this.loadItems$.next()
     })
   }
 

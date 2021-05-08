@@ -30,7 +30,7 @@ namespace Minigram.Api.Controllers
             [Description("The part of the name of the searched user")] [FromQuery] string searchTerm,
             CancellationToken cancellationToken)
         {
-            return userService.ListUsersAsync(searchTerm, cancellationToken);
+            return userService.ListUsersAsync(searchTerm ?? string.Empty, cancellationToken);
         }
     }
 }
