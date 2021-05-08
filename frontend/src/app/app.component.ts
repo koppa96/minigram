@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core'
 import { OAuthService } from 'angular-oauth2-oidc'
-import { ConversationsClient } from './shared/clients'
 import { NbMenuItem } from '@nebular/theme'
 
 @Component({
@@ -34,15 +33,12 @@ export class AppComponent implements OnInit {
   ]
 
   constructor(
-    private oauthService: OAuthService,
-    private conversationsClient: ConversationsClient
+    private oauthService: OAuthService
   ) { }
 
   ngOnInit() {
     if (!this.oauthService.hasValidAccessToken()) {
       this.oauthService.initCodeFlow()
     }
-
-    this.conversationsClient.listConversations(0, 25).subscribe(x => console.log(x))
   }
 }

@@ -1,1 +1,25 @@
-<p>sent-friend-requests works!</p>
+<nb-card>
+  <nb-card-header>
+    <h2>Kimenő barátkérelmek</h2>
+    <button nbButton status="success">
+      <nb-icon icon="person-add-outline"></nb-icon>
+      Új barátkérelem
+    </button>
+  </nb-card-header>
+  <div class="empty-friendlist" *ngIf="!((requests$ | async)?.length)">
+    <nb-icon icon="person-delete-outline"></nb-icon>
+    <span>Jelenleg nincsenek kimenő barátkérelmeid.</span>
+  </div>
+  <nb-list>
+    <nb-list-item *ngFor="let request of requests$ | async">
+      <nb-user [name]="request.sender.userName"></nb-user>
+      <button nbButton status="danger" outline (click)="cancelFriendRequest(request.id)">
+        <nb-icon icon="close-outline"></nb-icon>
+        Visszavonás
+      </button>
+    </nb-list-item>
+  </nb-list>
+  <nb-card-footer>
+    <app-pager [model]="pager$ | async" (loadPage)="loadPage($event)"></app-pager>
+  </nb-card-footer>
+</nb-card>

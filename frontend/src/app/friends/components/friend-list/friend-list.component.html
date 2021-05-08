@@ -1,1 +1,21 @@
-<p>friend-list works!</p>
+<nb-card>
+  <nb-card-header>
+    <h2>Barátlista</h2>
+  </nb-card-header>
+  <div class="empty-friendlist" *ngIf="!((friendships$ | async)?.length)">
+    <nb-icon icon="person-delete-outline"></nb-icon>
+    <span>Jelenleg még nincsenek visszaigazolt barátságaid.</span>
+  </div>
+  <nb-list>
+    <nb-list-item *ngFor="let friendship of friendships$ | async">
+      <nb-user [name]="friendship.friend.userName"></nb-user>
+      <button nbButton status="danger" outline (click)="deleteFriendship(friendship.id)">
+        <nb-icon icon="trash-2-outline"></nb-icon>
+        Eltávolítás
+      </button>
+    </nb-list-item>
+  </nb-list>
+  <nb-card-footer>
+    <app-pager [model]="pager$ | async" (loadPage)="loadPage($event)"></app-pager>
+  </nb-card-footer>
+</nb-card>

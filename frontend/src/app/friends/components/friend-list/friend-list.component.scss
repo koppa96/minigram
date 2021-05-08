@@ -1,0 +1,20 @@
+nb-list-item {
+  justify-content: space-between;
+}
+
+.empty-friendlist {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: lightgray;
+
+  nb-icon {
+    font-size: 100px;
+  }
+}
+
+nb-card {
+  height: 100%;
+}

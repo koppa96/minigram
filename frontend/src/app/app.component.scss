@@ -1,3 +1,7 @@
 .w-25 {
   width: 25vw;
 }
+
+::ng-deep nb-layout-column {
+  padding-bottom: 2.25rem !important;
+}

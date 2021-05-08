@@ -20,6 +20,7 @@
     "@angular/platform-browser": "~11.2.13",
     "@angular/platform-browser-dynamic": "~11.2.13",
     "@angular/router": "~11.2.13",
+    "@microsoft/signalr": "^5.0.5",
     "@nebular/eva-icons": "7.0.0",
     "@nebular/theme": "^7.0.0",
     "angular-oauth2-oidc": "^10.0.3",

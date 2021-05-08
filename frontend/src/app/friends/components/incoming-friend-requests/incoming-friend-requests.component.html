@@ -1,1 +1,28 @@
-<p>incoming-friend-requests works!</p>
+<nb-card>
+  <nb-card-header>
+    <h2>Bejövő barátkérelmek</h2>
+  </nb-card-header>
+  <div class="empty-friendlist" *ngIf="!((requests$ | async)?.length)">
+    <nb-icon icon="person-delete-outline"></nb-icon>
+    <span>Jelenleg nincsenek bejövő barátkérelmeid.</span>
+  </div>
+  <nb-list>
+    <nb-list-item *ngFor="let request of requests$ | async">
+      <nb-user [name]="request.sender.userName"></nb-user>
+      <div class="actions">
+        <button nbButton status="success" outline (click)="acceptFriendRequest(request.id)">
+          <nb-icon icon="checkmark-outline"></nb-icon>
+          Elfogadás
+        </button>
+        <button nbButton status="danger" outline (click)="rejectFriendRequest(request.id)">
+          <nb-icon icon="close-outline"></nb-icon>
+          Elutasítás
+        </button>
+      </div>
+
+    </nb-list-item>
+  </nb-list>
+  <nb-card-footer>
+    <app-pager [model]="pager$ | async" (loadPage)="loadPage($event)"></app-pager>
+  </nb-card-footer>
+</nb-card>

@@ -1,0 +1,26 @@
+nb-list-item {
+  justify-content: space-between;
+}
+
+nb-card {
+  height: 100%;
+}
+
+.empty-friendlist {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: lightgray;
+
+  nb-icon {
+    font-size: 100px;
+  }
+}
+
+.actions {
+  button:first-child {
+    margin-right: 10px;
+  }
+}
