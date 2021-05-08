@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core'
-import { BehaviorSubject, Observable } from 'rxjs'
+import { Subject, Observable } from 'rxjs'
 import { FriendRequestDto, FriendRequestsClient, FriendshipCreateDto, FriendshipsClient } from '../../../shared/clients'
 import { PagerModel } from '../../../shared/models/pager.model'
-import { map, switchMap, tap } from 'rxjs/operators'
+import { map, share, switchMap, tap } from 'rxjs/operators'
 import { defaultPageSize } from '../../../shared/constants'
 
 @Component({
@@ -11,8 +11,8 @@ import { defaultPageSize } from '../../../shared/constants'
   styleUrls: ['./sent-friend-requests.component.scss']
 })
 export class SentFriendRequestsComponent implements AfterViewInit, OnDestroy {
-
-  loadItems$ = new BehaviorSubject<number>(0)
+  currentPage = 0
+  loadItems$ = new Subject<number>()
   requests$: Observable<FriendRequestDto[]>
   pager$: Observable<PagerModel>
 
@@ -20,7 +20,8 @@ export class SentFriendRequestsComponent implements AfterViewInit, OnDestroy {
     private friendRequestsClient: FriendRequestsClient
   ) {
     const response$ = this.loadItems$.pipe(
-      switchMap(pageIndex => this.friendRequestsClient.listReceivedRequests(pageIndex, defaultPageSize))
+      switchMap(pageIndex => this.friendRequestsClient.listReceivedRequests(pageIndex, defaultPageSize)),
+      share()
     )
 
     this.requests$ = response$.pipe(
@@ -38,10 +39,11 @@ export class SentFriendRequestsComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.loadItems$.next(0)
+    this.loadItems$.next(this.currentPage)
   }
 
   loadPage(pageIndex: number) {
+    this.currentPage = pageIndex
     this.loadItems$.next(pageIndex)
   }
 
@@ -51,7 +53,7 @@ export class SentFriendRequestsComponent implements AfterViewInit, OnDestroy {
 
   cancelFriendRequest(requestId: string) {
     this.friendRequestsClient.deleteRequest(requestId).subscribe(() => {
-      this.loadItems$.next(this.loadItems$.value)
+      this.loadItems$.next(this.currentPage)
     })
   }
 }

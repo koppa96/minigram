@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core'
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs'
-import { FriendshipDto, FriendshipsClient, UserListDto } from '../../../shared/clients'
-import { map, switchMap } from 'rxjs/operators'
+import { AfterViewInit, Component, OnDestroy } from '@angular/core'
+import {  Observable, Subject } from 'rxjs'
+import { FriendshipDto, FriendshipsClient } from '../../../shared/clients'
+import { map, share, switchMap } from 'rxjs/operators'
 import { PagerModel } from '../../../shared/models/pager.model'
 import { defaultPageSize } from '../../../shared/constants'
 
@@ -11,14 +11,15 @@ import { defaultPageSize } from '../../../shared/constants'
   styleUrls: ['./friend-list.component.scss']
 })
 export class FriendListComponent implements AfterViewInit, OnDestroy {
-
-  loadItems$ = new BehaviorSubject<number>(0)
+  currentPage = 0
+  loadItems$ = new Subject<number>()
   friendships$: Observable<FriendshipDto[]>
   pager$: Observable<PagerModel>
 
   constructor(private client: FriendshipsClient) {
     const response$ = this.loadItems$.pipe(
-      switchMap(pageIndex => client.listFriends(pageIndex, defaultPageSize))
+      switchMap(pageIndex => client.listFriends(pageIndex, defaultPageSize)),
+      share()
     )
 
     this.friendships$ = response$.pipe(
@@ -36,16 +37,20 @@ export class FriendListComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.loadItems$.next(0)
+    console.log('ngAfterViewInit')
+    this.loadItems$.next(this.currentPage)
   }
 
   loadPage(pageIndex: number) {
+    this.currentPage = pageIndex
+    console.log('loadPage')
     this.loadItems$.next(pageIndex)
   }
 
   deleteFriendship(friendshipId: string) {
     this.client.deleteFriendship(friendshipId).subscribe(() => {
-      this.loadItems$.next(this.loadItems$.value)
+      console.log('deleteFriendship')
+      this.loadItems$.next(this.currentPage)
     })
   }
 

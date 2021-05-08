@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
+using System.Threading.Tasks;
 using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Minigram.Api.Extensions;
 using Minigram.Api.Services;
@@ -45,6 +47,7 @@ namespace Minigram.Api
             
             services.AddControllers();
             services.AddSignalR();
+            services.AddTransient<IUserIdProvider, UserIdProvider>();
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             services.AddAuthentication()
@@ -53,6 +56,18 @@ namespace Minigram.Api
                     options.Authority = Configuration.GetValue<string>("Authentication:Authority");
                     options.Audience = Configuration.GetValue<string>("Authentication:Audience");
                     options.RequireHttpsMetadata = false;
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            var token = context.Request.Query["access_token"];
+                            if (!string.IsNullOrEmpty(token) && context.Request.Path.StartsWithSegments("/notifications"))
+                            {
+                                context.Token = token;
+                            }
+                            return Task.CompletedTask;
+                        }
+                    };
                 });
 
             services.AddCors(options =>

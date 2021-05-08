@@ -1,9 +1,10 @@
 import { AfterViewInit, Component, OnDestroy } from '@angular/core'
-import { BehaviorSubject, Observable } from 'rxjs'
+import { merge, Observable, Subject } from 'rxjs'
 import { FriendRequestDto, FriendRequestsClient, FriendshipCreateDto, FriendshipsClient } from '../../../shared/clients'
 import { PagerModel } from '../../../shared/models/pager.model'
-import { map, switchMap, tap } from 'rxjs/operators'
+import { map, share, switchMap } from 'rxjs/operators'
 import { defaultPageSize } from '../../../shared/constants'
+import { HubService } from '../../../shared/services/hub.service'
 
 @Component({
   selector: 'app-incoming-friend-requests',
@@ -11,17 +12,19 @@ import { defaultPageSize } from '../../../shared/constants'
   styleUrls: ['./incoming-friend-requests.component.scss']
 })
 export class IncomingFriendRequestsComponent implements AfterViewInit, OnDestroy {
-
-  loadItems$ = new BehaviorSubject<number>(0)
+  currentPage = 0
+  loadItems$ = new Subject()
   requests$: Observable<FriendRequestDto[]>
   pager$: Observable<PagerModel>
 
   constructor(
     private friendRequestsClient: FriendRequestsClient,
-    private friendshipsClient: FriendshipsClient
+    private friendshipsClient: FriendshipsClient,
+    private hubService: HubService
   ) {
-    const response$ = this.loadItems$.pipe(
-      switchMap(pageIndex => this.friendRequestsClient.listReceivedRequests(pageIndex, defaultPageSize))
+    const response$ = merge(this.loadItems$, hubService.friendRequestCreated$).pipe(
+      switchMap(() => this.friendRequestsClient.listReceivedRequests(this.currentPage, defaultPageSize)),
+      share()
     )
 
     this.requests$ = response$.pipe(
@@ -39,11 +42,12 @@ export class IncomingFriendRequestsComponent implements AfterViewInit, OnDestroy
   }
 
   ngAfterViewInit() {
-    this.loadItems$.next(0)
+    this.loadItems$.next(this.currentPage)
   }
 
   loadPage(pageIndex: number) {
-    this.loadItems$.next(pageIndex)
+    this.currentPage = pageIndex
+    this.loadItems$.next()
   }
 
   ngOnDestroy() {
@@ -54,13 +58,13 @@ export class IncomingFriendRequestsComponent implements AfterViewInit, OnDestroy
     this.friendshipsClient.createFriendship(new FriendshipCreateDto({
       requestId
     })).subscribe(() => {
-      this.loadItems$.next(this.loadItems$.value)
+      this.loadItems$.next()
     })
   }
 
   rejectFriendRequest(requestId: string) {
     this.friendRequestsClient.deleteRequest(requestId).subscribe(() => {
-      this.loadItems$.next(this.loadItems$.value)
+      this.loadItems$.next()
     })
   }
 

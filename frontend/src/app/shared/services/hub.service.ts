@@ -20,15 +20,15 @@ export class HubService {
   private mConversationDeleted = new Subject<string>()
   private mMessageReceived = new Subject<{conversationId: string, message: MessageDto}>()
 
-  get friendRequestCreated() { return this.mFriendRequestCreated.asObservable() }
-  get friendRequestDeleted() { return this.mFriendRequestDeleted.asObservable() }
-  get friendshipCreated() { return this.mFriendshipCreated.asObservable() }
-  get friendshipDeleted() { return this.mFriendshipDeleted.asObservable() }
+  get friendRequestCreated$() { return this.mFriendRequestCreated.asObservable() }
+  get friendRequestDeleted$() { return this.mFriendRequestDeleted.asObservable() }
+  get friendshipCreated$() { return this.mFriendshipCreated.asObservable() }
+  get friendshipDeleted$() { return this.mFriendshipDeleted.asObservable() }
 
-  get addedToConversation() { return this.mAddedToConversation.asObservable() }
-  get conversationUpdated() { return this.mConversationUpdated.asObservable() }
-  get conversationDeleted() { return this.mConversationDeleted.asObservable() }
-  get messageReceived() { return this.mMessageReceived.asObservable() }
+  get addedToConversation$() { return this.mAddedToConversation.asObservable() }
+  get conversationUpdated$() { return this.mConversationUpdated.asObservable() }
+  get conversationDeleted$() { return this.mConversationDeleted.asObservable() }
+  get messageReceived$() { return this.mMessageReceived.asObservable() }
 
   constructor(
     @Inject(API_BASE_URL) private apiBaseUrl: string,
