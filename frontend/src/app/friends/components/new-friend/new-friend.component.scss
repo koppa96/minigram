@@ -1,0 +1,19 @@
+nb-card-footer {
+  display: flex;
+  justify-content: flex-end;
+
+  button:first-child {
+    margin-right: 10px;
+  }
+}
+
+nb-card-body {
+  input {
+    max-width: 100% !important;
+    width: 100%;
+  }
+}
+
+nb-card {
+  width: 30vw;
+}

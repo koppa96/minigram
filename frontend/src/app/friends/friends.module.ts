@@ -4,9 +4,18 @@ import { FriendListComponent } from './components/friend-list/friend-list.compon
 import { IncomingFriendRequestsComponent } from './components/incoming-friend-requests/incoming-friend-requests.component';
 import { SentFriendRequestsComponent } from './components/sent-friend-requests/sent-friend-requests.component'
 import { FriendsRoutingModule } from './friends-routing.module'
-import { NbButtonModule, NbCardModule, NbDialogModule, NbIconModule, NbListModule, NbUserModule } from '@nebular/theme'
+import {
+  NbAutocompleteModule,
+  NbButtonModule,
+  NbCardModule,
+  NbDialogModule,
+  NbIconModule, NbInputModule,
+  NbListModule, NbToastrModule,
+  NbUserModule
+} from '@nebular/theme'
 import { SharedModule } from '../shared/shared.module';
 import { NewFriendComponent } from './components/new-friend/new-friend.component'
+import { ReactiveFormsModule } from '@angular/forms'
 
 @NgModule({
   declarations: [
@@ -24,7 +33,11 @@ import { NewFriendComponent } from './components/new-friend/new-friend.component
     NbButtonModule,
     NbIconModule,
     SharedModule,
-    NbDialogModule.forChild()
+    NbDialogModule.forChild(),
+    ReactiveFormsModule,
+    NbAutocompleteModule,
+    NbInputModule,
+    NbToastrModule
   ]
 })
 export class FriendsModule { }

@@ -1,10 +1,12 @@
 import { AfterViewInit, Component, OnDestroy } from '@angular/core'
 import { merge, Observable, Subject } from 'rxjs'
-import { FriendshipDto, FriendshipsClient } from '../../../shared/clients'
+import { FriendRequestCreateDto, FriendRequestsClient, FriendshipDto, FriendshipsClient } from '../../../shared/clients'
 import { map, share, switchMap } from 'rxjs/operators'
 import { PagerModel } from '../../../shared/models/pager.model'
 import { defaultPageSize } from '../../../shared/constants'
 import { HubService } from '../../../shared/services/hub.service'
+import { NbDialogService, NbToastrService } from '@nebular/theme'
+import { NewFriendComponent } from '../new-friend/new-friend.component'
 
 @Component({
   selector: 'app-friend-list',
@@ -19,7 +21,10 @@ export class FriendListComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     private client: FriendshipsClient,
-    private hubService: HubService
+    private hubService: HubService,
+    private dialog: NbDialogService,
+    private friendRequestsClient: FriendRequestsClient,
+    private toast: NbToastrService
   ) {
     const response$ = merge(
       this.loadItems$,
@@ -56,6 +61,18 @@ export class FriendListComponent implements AfterViewInit, OnDestroy {
   deleteFriendship(friendshipId: string) {
     this.client.deleteFriendship(friendshipId).subscribe(() => {
       this.loadItems$.next()
+    })
+  }
+
+  openNewFriendDialog() {
+    this.dialog.open(NewFriendComponent).onClose.subscribe(recipientId => {
+      if (recipientId) {
+        this.friendRequestsClient.sendRequest(new FriendRequestCreateDto({
+          recipientId
+        })).subscribe(() => {
+          this.toast.success('Barátkérelem sikeresen elküldve', 'Siker')
+        })
+      }
     })
   }
 

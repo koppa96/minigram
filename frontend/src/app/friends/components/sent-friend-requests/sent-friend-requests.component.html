@@ -1,7 +1,7 @@
 <nb-card>
   <nb-card-header>
     <h2>Kimenő barátkérelmek</h2>
-    <button nbButton status="success">
+    <button nbButton hero status="success" (click)="openNewFriendDialog()">
       <nb-icon icon="person-add-outline"></nb-icon>
       Új barátkérelem
     </button>
@@ -12,7 +12,7 @@
   </div>
   <nb-list>
     <nb-list-item *ngFor="let request of requests$ | async">
-      <nb-user [name]="request.sender.userName"></nb-user>
+      <nb-user [name]="request.recipient.userName"></nb-user>
       <button nbButton status="danger" outline (click)="cancelFriendRequest(request.id)">
         <nb-icon icon="close-outline"></nb-icon>
         Visszavonás

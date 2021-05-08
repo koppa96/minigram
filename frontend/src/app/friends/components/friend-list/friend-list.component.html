@@ -1,6 +1,10 @@
 <nb-card>
   <nb-card-header>
     <h2>Barátlista</h2>
+    <button nbButton hero status="success" (click)="openNewFriendDialog()">
+      <nb-icon icon="person-add-outline"></nb-icon>
+      Új barátkérelem
+    </button>
   </nb-card-header>
   <div class="empty-friendlist" *ngIf="!((friendships$ | async)?.length)">
     <nb-icon icon="person-delete-outline"></nb-icon>
