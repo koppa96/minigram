@@ -30,11 +30,12 @@ namespace Minigram.Api.Controllers
         [Description("List friends")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public Task<PagedListDto<FriendshipDto>> ListFriendsAsync(
+            [Description("The name of the friend")] [FromQuery] string searchText = null,
             [Description("The index of the page")] [FromQuery] int pageIndex = 0,
             [Description("The amount of items per page")] [FromQuery] int pageSize = 25,
             CancellationToken cancellationToken = default)
         {
-            return friendService.ListFriendshipsAsync(pageIndex, pageSize, cancellationToken);
+            return friendService.ListFriendshipsAsync(searchText, pageIndex, pageSize, cancellationToken);
         }
 
         [HttpPost]

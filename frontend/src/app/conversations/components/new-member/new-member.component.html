@@ -1,0 +1,23 @@
+<nb-card>
+  <nb-card-header>
+    <h2>Új tag felvétele</h2>
+  </nb-card-header>
+  <nb-card-body>
+    <input nbInput [formControl]="formControl" type="text" autocomplete="off" placeholder="Keresett név" [nbAutocomplete]="autocomplete">
+    <nb-autocomplete #autocomplete [handleDisplayFn]="displayFn">
+      <nb-option *ngFor="let recipient of members$ | async" [value]="recipient">
+        {{ recipient.userName }}
+      </nb-option>
+    </nb-autocomplete>
+  </nb-card-body>
+  <nb-card-footer>
+    <button nbButton hero status="danger" (click)="cancel()">
+      <nb-icon icon="close-outline"></nb-icon>
+      Mégse
+    </button>
+    <button nbButton hero status="primary" (click)="add()">
+      <nb-icon icon="plus"></nb-icon>
+      Hozzáadás
+    </button>
+  </nb-card-footer>
+</nb-card>

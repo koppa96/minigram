@@ -1076,11 +1076,14 @@ export class FriendshipsClient {
 
     /**
      * List friends
+     * @param searchText (optional) The name of the friend
      * @param pageIndex (optional) The index of the page
      * @param pageSize (optional) The amount of items per page
      */
-    listFriends(pageIndex: number | undefined, pageSize: number | undefined): Observable<PagedListDtoOfFriendshipDto> {
+    listFriends(searchText: string | null | undefined, pageIndex: number | undefined, pageSize: number | undefined): Observable<PagedListDtoOfFriendshipDto> {
         let url_ = this.baseUrl + "/api/friendships?";
+        if (searchText !== undefined && searchText !== null)
+            url_ += "searchText=" + encodeURIComponent("" + searchText) + "&";
         if (pageIndex === null)
             throw new Error("The parameter 'pageIndex' cannot be null.");
         else if (pageIndex !== undefined)
@@ -1531,12 +1534,12 @@ export class UsersClient {
 }
 
 export class ProblemDetails implements IProblemDetails {
-    type?: string | undefined;
-    title?: string | undefined;
-    status?: number | undefined;
-    detail?: string | undefined;
-    instance?: string | undefined;
-    extensions?: { [key: string]: any; } | undefined;
+    type!: string | undefined;
+    title!: string | undefined;
+    status!: number | undefined;
+    detail!: string | undefined;
+    instance!: string | undefined;
+    extensions!: { [key: string]: any; } | undefined;
 
     constructor(data?: IProblemDetails) {
         if (data) {
@@ -1590,18 +1593,18 @@ export class ProblemDetails implements IProblemDetails {
 }
 
 export interface IProblemDetails {
-    type?: string | undefined;
-    title?: string | undefined;
-    status?: number | undefined;
-    detail?: string | undefined;
-    instance?: string | undefined;
-    extensions?: { [key: string]: any; } | undefined;
+    type: string | undefined;
+    title: string | undefined;
+    status: number | undefined;
+    detail: string | undefined;
+    instance: string | undefined;
+    extensions: { [key: string]: any; } | undefined;
 }
 
 export class ConversationMembershipDto implements IConversationMembershipDto {
-    id?: string;
-    member?: UserListDto | undefined;
-    isAdmin?: boolean;
+    id!: string;
+    member!: UserListDto | undefined;
+    isAdmin!: boolean;
 
     constructor(data?: IConversationMembershipDto) {
         if (data) {
@@ -1637,14 +1640,14 @@ export class ConversationMembershipDto implements IConversationMembershipDto {
 }
 
 export interface IConversationMembershipDto {
-    id?: string;
-    member?: UserListDto | undefined;
-    isAdmin?: boolean;
+    id: string;
+    member: UserListDto | undefined;
+    isAdmin: boolean;
 }
 
 export class UserListDto implements IUserListDto {
-    id?: string;
-    userName?: string | undefined;
+    id!: string;
+    userName!: string | undefined;
 
     constructor(data?: IUserListDto) {
         if (data) {
@@ -1678,12 +1681,12 @@ export class UserListDto implements IUserListDto {
 }
 
 export interface IUserListDto {
-    id?: string;
-    userName?: string | undefined;
+    id: string;
+    userName: string | undefined;
 }
 
 export class ConversationMembershipEditDto implements IConversationMembershipEditDto {
-    isAdmin?: boolean;
+    isAdmin!: boolean;
 
     constructor(data?: IConversationMembershipEditDto) {
         if (data) {
@@ -1715,14 +1718,14 @@ export class ConversationMembershipEditDto implements IConversationMembershipEdi
 }
 
 export interface IConversationMembershipEditDto {
-    isAdmin?: boolean;
+    isAdmin: boolean;
 }
 
 export class PagedListDtoOfConversationListDto implements IPagedListDtoOfConversationListDto {
-    pageIndex?: number;
-    pageSize?: number;
-    totalCount?: number;
-    data?: ConversationListDto[] | undefined;
+    pageIndex!: number;
+    pageSize!: number;
+    totalCount!: number;
+    data!: ConversationListDto[] | undefined;
 
     constructor(data?: IPagedListDtoOfConversationListDto) {
         if (data) {
@@ -1768,16 +1771,16 @@ export class PagedListDtoOfConversationListDto implements IPagedListDtoOfConvers
 }
 
 export interface IPagedListDtoOfConversationListDto {
-    pageIndex?: number;
-    pageSize?: number;
-    totalCount?: number;
-    data?: ConversationListDto[] | undefined;
+    pageIndex: number;
+    pageSize: number;
+    totalCount: number;
+    data: ConversationListDto[] | undefined;
 }
 
 export class ConversationListDto implements IConversationListDto {
-    id?: string;
-    name?: string | undefined;
-    lastMessage?: MessageDto | undefined;
+    id!: string;
+    name!: string | undefined;
+    lastMessage!: MessageDto | undefined;
 
     constructor(data?: IConversationListDto) {
         if (data) {
@@ -1813,16 +1816,16 @@ export class ConversationListDto implements IConversationListDto {
 }
 
 export interface IConversationListDto {
-    id?: string;
-    name?: string | undefined;
-    lastMessage?: MessageDto | undefined;
+    id: string;
+    name: string | undefined;
+    lastMessage: MessageDto | undefined;
 }
 
 export class MessageDto implements IMessageDto {
-    id?: string;
-    text?: string | undefined;
-    sender?: UserListDto | undefined;
-    createdAt?: Date | undefined;
+    id!: string;
+    text!: string | undefined;
+    sender!: UserListDto | undefined;
+    createdAt!: Date | undefined;
 
     constructor(data?: IMessageDto) {
         if (data) {
@@ -1860,16 +1863,16 @@ export class MessageDto implements IMessageDto {
 }
 
 export interface IMessageDto {
-    id?: string;
-    text?: string | undefined;
-    sender?: UserListDto | undefined;
-    createdAt?: Date | undefined;
+    id: string;
+    text: string | undefined;
+    sender: UserListDto | undefined;
+    createdAt: Date | undefined;
 }
 
 export class ConversationDetailsDto implements IConversationDetailsDto {
-    id?: string;
-    name?: string | undefined;
-    memberships?: ConversationMembershipDto[] | undefined;
+    id!: string;
+    name!: string | undefined;
+    memberships!: ConversationMembershipDto[] | undefined;
 
     constructor(data?: IConversationDetailsDto) {
         if (data) {
@@ -1913,13 +1916,13 @@ export class ConversationDetailsDto implements IConversationDetailsDto {
 }
 
 export interface IConversationDetailsDto {
-    id?: string;
-    name?: string | undefined;
-    memberships?: ConversationMembershipDto[] | undefined;
+    id: string;
+    name: string | undefined;
+    memberships: ConversationMembershipDto[] | undefined;
 }
 
 export class ConversationCreateEditDto implements IConversationCreateEditDto {
-    name?: string | undefined;
+    name!: string | undefined;
 
     constructor(data?: IConversationCreateEditDto) {
         if (data) {
@@ -1951,11 +1954,11 @@ export class ConversationCreateEditDto implements IConversationCreateEditDto {
 }
 
 export interface IConversationCreateEditDto {
-    name?: string | undefined;
+    name: string | undefined;
 }
 
 export class ConversationMembershipCreateDto implements IConversationMembershipCreateDto {
-    userId?: string;
+    userId!: string;
 
     constructor(data?: IConversationMembershipCreateDto) {
         if (data) {
@@ -1987,14 +1990,14 @@ export class ConversationMembershipCreateDto implements IConversationMembershipC
 }
 
 export interface IConversationMembershipCreateDto {
-    userId?: string;
+    userId: string;
 }
 
 export class PagedListDtoOfFriendRequestDto implements IPagedListDtoOfFriendRequestDto {
-    pageIndex?: number;
-    pageSize?: number;
-    totalCount?: number;
-    data?: FriendRequestDto[] | undefined;
+    pageIndex!: number;
+    pageSize!: number;
+    totalCount!: number;
+    data!: FriendRequestDto[] | undefined;
 
     constructor(data?: IPagedListDtoOfFriendRequestDto) {
         if (data) {
@@ -2040,16 +2043,16 @@ export class PagedListDtoOfFriendRequestDto implements IPagedListDtoOfFriendRequ
 }
 
 export interface IPagedListDtoOfFriendRequestDto {
-    pageIndex?: number;
-    pageSize?: number;
-    totalCount?: number;
-    data?: FriendRequestDto[] | undefined;
+    pageIndex: number;
+    pageSize: number;
+    totalCount: number;
+    data: FriendRequestDto[] | undefined;
 }
 
 export class FriendRequestDto implements IFriendRequestDto {
-    id?: string;
-    sender?: UserListDto | undefined;
-    recipient?: UserListDto | undefined;
+    id!: string;
+    sender!: UserListDto | undefined;
+    recipient!: UserListDto | undefined;
 
     constructor(data?: IFriendRequestDto) {
         if (data) {
@@ -2085,13 +2088,13 @@ export class FriendRequestDto implements IFriendRequestDto {
 }
 
 export interface IFriendRequestDto {
-    id?: string;
-    sender?: UserListDto | undefined;
-    recipient?: UserListDto | undefined;
+    id: string;
+    sender: UserListDto | undefined;
+    recipient: UserListDto | undefined;
 }
 
 export class FriendRequestCreateDto implements IFriendRequestCreateDto {
-    recipientId?: string;
+    recipientId!: string;
 
     constructor(data?: IFriendRequestCreateDto) {
         if (data) {
@@ -2123,14 +2126,14 @@ export class FriendRequestCreateDto implements IFriendRequestCreateDto {
 }
 
 export interface IFriendRequestCreateDto {
-    recipientId?: string;
+    recipientId: string;
 }
 
 export class PagedListDtoOfFriendshipDto implements IPagedListDtoOfFriendshipDto {
-    pageIndex?: number;
-    pageSize?: number;
-    totalCount?: number;
-    data?: FriendshipDto[] | undefined;
+    pageIndex!: number;
+    pageSize!: number;
+    totalCount!: number;
+    data!: FriendshipDto[] | undefined;
 
     constructor(data?: IPagedListDtoOfFriendshipDto) {
         if (data) {
@@ -2176,15 +2179,15 @@ export class PagedListDtoOfFriendshipDto implements IPagedListDtoOfFriendshipDto
 }
 
 export interface IPagedListDtoOfFriendshipDto {
-    pageIndex?: number;
-    pageSize?: number;
-    totalCount?: number;
-    data?: FriendshipDto[] | undefined;
+    pageIndex: number;
+    pageSize: number;
+    totalCount: number;
+    data: FriendshipDto[] | undefined;
 }
 
 export class FriendshipDto implements IFriendshipDto {
-    id?: string;
-    friend?: UserListDto | undefined;
+    id!: string;
+    friend!: UserListDto | undefined;
 
     constructor(data?: IFriendshipDto) {
         if (data) {
@@ -2218,12 +2221,12 @@ export class FriendshipDto implements IFriendshipDto {
 }
 
 export interface IFriendshipDto {
-    id?: string;
-    friend?: UserListDto | undefined;
+    id: string;
+    friend: UserListDto | undefined;
 }
 
 export class FriendshipCreateDto implements IFriendshipCreateDto {
-    requestId?: string;
+    requestId!: string;
 
     constructor(data?: IFriendshipCreateDto) {
         if (data) {
@@ -2255,14 +2258,14 @@ export class FriendshipCreateDto implements IFriendshipCreateDto {
 }
 
 export interface IFriendshipCreateDto {
-    requestId?: string;
+    requestId: string;
 }
 
 export class PagedListDtoOfMessageDto implements IPagedListDtoOfMessageDto {
-    pageIndex?: number;
-    pageSize?: number;
-    totalCount?: number;
-    data?: MessageDto[] | undefined;
+    pageIndex!: number;
+    pageSize!: number;
+    totalCount!: number;
+    data!: MessageDto[] | undefined;
 
     constructor(data?: IPagedListDtoOfMessageDto) {
         if (data) {
@@ -2308,10 +2311,10 @@ export class PagedListDtoOfMessageDto implements IPagedListDtoOfMessageDto {
 }
 
 export interface IPagedListDtoOfMessageDto {
-    pageIndex?: number;
-    pageSize?: number;
-    totalCount?: number;
-    data?: MessageDto[] | undefined;
+    pageIndex: number;
+    pageSize: number;
+    totalCount: number;
+    data: MessageDto[] | undefined;
 }
 
 export class ApiException extends Error {

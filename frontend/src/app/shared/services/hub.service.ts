@@ -17,7 +17,7 @@ export class HubService {
 
   private mAddedToConversation = new Subject<ConversationListDto>()
   private mConversationUpdated = new Subject<ConversationDetailsDto>()
-  private mConversationDeleted = new Subject<string>()
+  private mRemovedFromConversation = new Subject<string>()
   private mMessageReceived = new Subject<{conversationId: string, message: MessageDto}>()
 
   get friendRequestCreated$() { return this.mFriendRequestCreated.asObservable() }
@@ -27,7 +27,7 @@ export class HubService {
 
   get addedToConversation$() { return this.mAddedToConversation.asObservable() }
   get conversationUpdated$() { return this.mConversationUpdated.asObservable() }
-  get conversationDeleted$() { return this.mConversationDeleted.asObservable() }
+  get removedFromConversation$() { return this.mRemovedFromConversation.asObservable() }
   get messageReceived$() { return this.mMessageReceived.asObservable() }
 
   constructor(
@@ -50,7 +50,7 @@ export class HubService {
 
       this.connection.on('AddedToConversation', conversation => this.mAddedToConversation.next(conversation))
       this.connection.on('ConversationUpdated', conversation => this.mConversationUpdated.next(conversation))
-      this.connection.on('ConversationDeleted', conversationId => this.mConversationDeleted.next(conversationId))
+      this.connection.on('RemovedFromConversation', conversationId => this.mRemovedFromConversation.next(conversationId))
       this.connection.on('MessageReceived', (conversationId, message) => this.mMessageReceived.next({ conversationId, message }))
     }
 

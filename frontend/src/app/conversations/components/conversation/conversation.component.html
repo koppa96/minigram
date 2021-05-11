@@ -1,1 +1,23 @@
-<p>conversation works!</p>
+<div class="chat-container">
+  <div class="actions-container">
+    <button nbButton hero status="success" *ngIf="conversation | isAdmin:currentUserId" (click)="openAddMember()">
+      <nb-icon icon="person-add-outline"></nb-icon>
+      Tag hozzáadása
+    </button>
+    <button nbButton hero status="primary" (click)="openDetails()">
+      <nb-icon icon="edit-outline"></nb-icon>
+      Részletek
+    </button>
+  </div>
+  <nb-chat [title]="conversation?.name" [scrollBottom]="true">
+    <nb-chat-message
+      *ngFor="let message of messages"
+      [sender]="message.sender.userName"
+      [date]="message.createdAt"
+      dateFormat="yyyy. MM. dd. HH:mm:ss"
+      [message]="message.text"
+      type="text"
+      [reply]="message.sender.id === currentUserId"></nb-chat-message>
+    <nb-chat-form (send)="sendMessage($event)"></nb-chat-form>
+  </nb-chat>
+</div>

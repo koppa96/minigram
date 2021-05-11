@@ -1,0 +1,30 @@
+nb-card-footer {
+  display: flex;
+  justify-content: flex-end;
+
+  button:first-child {
+    margin-right: 10px;
+  }
+}
+
+nb-card-body {
+  input {
+    max-width: 100% !important;
+    width: 100%;
+  }
+
+  .error {
+    color: #ff3d71;
+    opacity: 0;
+    display: inline-block;
+    transition: opacity 100ms;
+
+    &.visible {
+      opacity: 1;
+    }
+  }
+}
+
+nb-card {
+  width: 30vw;
+}

@@ -1,0 +1,15 @@
+.chat-container {
+  position: relative;
+  height: calc(100vh - 9.25rem);
+
+  .actions-container {
+    position: absolute;
+    z-index: 1;
+    right: 1.25rem;
+    top: 0.5rem;
+
+    button:first-child {
+      margin-right: 10px;
+    }
+  }
+}

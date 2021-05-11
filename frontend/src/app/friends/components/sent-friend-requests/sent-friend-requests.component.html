@@ -6,12 +6,12 @@
       Új barátkérelem
     </button>
   </nb-card-header>
-  <div class="empty-friendlist" *ngIf="!((requests$ | async)?.length)">
+  <div class="empty-friendlist" *ngIf="!((requests$ | async)?.data.length)">
     <nb-icon icon="person-delete-outline"></nb-icon>
     <span>Jelenleg nincsenek kimenő barátkérelmeid.</span>
   </div>
   <nb-list>
-    <nb-list-item *ngFor="let request of requests$ | async">
+    <nb-list-item *ngFor="let request of (requests$ | async)?.data">
       <nb-user [name]="request.recipient.userName"></nb-user>
       <button nbButton status="danger" outline (click)="cancelFriendRequest(request.id)">
         <nb-icon icon="close-outline"></nb-icon>
@@ -20,6 +20,6 @@
     </nb-list-item>
   </nb-list>
   <nb-card-footer>
-    <app-pager [model]="pager$ | async" (loadPage)="loadPage($event)"></app-pager>
+    <app-pager [model]="requests$ | async | pager" (loadPage)="loadPage($event)"></app-pager>
   </nb-card-footer>
 </nb-card>

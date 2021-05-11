@@ -1,0 +1,30 @@
+<form [formGroup]="formGroup" (ngSubmit)="create(formGroup.value)">
+  <nb-card>
+    <nb-card-header>
+      <h2>Új beszélgetés felvétele</h2>
+    </nb-card-header>
+
+    <nb-card-body>
+      <input
+        nbInput
+        formControlName="conversationName"
+        type="text"
+        autocomplete="off"
+        placeholder="Beszélgetés neve"
+        [status]="formGroup.controls['conversationName'].touched ? (formGroup.controls['conversationName'].invalid  ? 'danger' : 'success') : 'basic'">
+      <span class="error" [ngClass]="{
+        'visible': formGroup.controls['conversationName'].touched && formGroup.controls['conversationName'].invalid
+      }">Kötelező kitölteni</span>
+    </nb-card-body>
+    <nb-card-footer>
+      <button type="button" nbButton hero status="danger" (click)="cancel()">
+        <nb-icon icon="close-outline"></nb-icon>
+        Mégse
+      </button>
+      <button type="submit" nbButton hero status="primary">
+        <nb-icon icon="paper-plane-outline"></nb-icon>
+        Küldés
+      </button>
+    </nb-card-footer>
+  </nb-card>
+</form>

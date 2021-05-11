@@ -1,0 +1,27 @@
+.empty-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: lightgray;
+
+  nb-icon {
+    font-size: 100px;
+  }
+}
+
+nb-card-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+nb-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nb-card {
+  height: 100%;
+}

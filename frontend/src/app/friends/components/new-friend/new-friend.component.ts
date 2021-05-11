@@ -20,7 +20,7 @@ export class NewFriendComponent {
     private dialogRef: NbDialogRef<NewFriendComponent>
   ) {
     this.recipients$ = this.formControl.valueChanges.pipe(
-      filter(value => value.length > 3),
+      filter(value => value.length >= 3),
       distinctUntilChanged(),
       debounceTime(500),
       switchMap(value => client.listUsers(value))

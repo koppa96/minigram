@@ -31,7 +31,7 @@ export class FriendListComponent implements AfterViewInit, OnDestroy {
       hubService.friendshipCreated$,
       hubService.friendshipDeleted$
     ).pipe(
-      switchMap(() => client.listFriends(this.currentPage, defaultPageSize)),
+      switchMap(() => client.listFriends(null, this.currentPage, defaultPageSize)),
       share()
     )
 

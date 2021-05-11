@@ -1,14 +1,11 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core'
+import { AfterViewInit, Component, OnDestroy } from '@angular/core'
 import { Subject, Observable, merge } from 'rxjs'
 import {
   FriendRequestCreateDto,
-  FriendRequestDto,
   FriendRequestsClient,
-  FriendshipCreateDto,
-  FriendshipsClient
+  PagedListDtoOfFriendRequestDto
 } from '../../../shared/clients'
-import { PagerModel } from '../../../shared/models/pager.model'
-import { map, share, switchMap, tap } from 'rxjs/operators'
+import { switchMap } from 'rxjs/operators'
 import { defaultPageSize } from '../../../shared/constants'
 import { HubService } from '../../../shared/services/hub.service'
 import { NbDialogService, NbToastrService } from '@nebular/theme'
@@ -22,8 +19,7 @@ import { NewFriendComponent } from '../new-friend/new-friend.component'
 export class SentFriendRequestsComponent implements AfterViewInit, OnDestroy {
   currentPage = 0
   loadItems$ = new Subject<void>()
-  requests$: Observable<FriendRequestDto[]>
-  pager$: Observable<PagerModel>
+  requests$: Observable<PagedListDtoOfFriendRequestDto>
 
   constructor(
     private friendRequestsClient: FriendRequestsClient,
@@ -31,25 +27,11 @@ export class SentFriendRequestsComponent implements AfterViewInit, OnDestroy {
     private dialog: NbDialogService,
     private toast: NbToastrService
   ) {
-    const response$ = merge(
+    this.requests$ = merge(
       this.loadItems$,
       hubService.friendRequestDeleted$
     ).pipe(
-      switchMap(() => this.friendRequestsClient.listSentRequests(this.currentPage, defaultPageSize)),
-      share()
-    )
-
-    this.requests$ = response$.pipe(
-      map(x => x.data)
-    )
-
-    this.pager$ = response$.pipe(
-      map(x => ({
-        pageIndex: x.pageIndex,
-        pageSize: x.pageSize,
-        totalCount: x.totalCount,
-        totalPages: Math.ceil(x.totalCount / x.pageSize)
-      }))
+      switchMap(() => this.friendRequestsClient.listSentRequests(this.currentPage, defaultPageSize))
     )
   }
 

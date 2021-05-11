@@ -50,7 +50,7 @@ export class AppComponent implements OnInit {
     this.hubService.friendshipDeleted$.subscribe(x => console.log('Friendship deleted', x))
 
     this.hubService.conversationUpdated$.subscribe(x => console.log('Conversation updated', x))
-    this.hubService.conversationDeleted$.subscribe(x => console.log('Conversation deleted', x))
+    this.hubService.removedFromConversation$.subscribe(x => console.log('Conversation deleted', x))
     this.hubService.addedToConversation$.subscribe(x => console.log('Added to conversation', x))
     this.hubService.messageReceived$.subscribe(x => console.log('Message received', x))
   }

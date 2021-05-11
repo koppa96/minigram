@@ -21,19 +21,23 @@ namespace Minigram.Application.Features.FriendManagement.Services
     {
         private readonly MinigramDbContext context;
         private readonly IIdentityService identityService;
-        private readonly INotificationService<IFriendshipClient> notificationService;
+        private readonly INotificationService<IFriendManagementClient> notificationService;
 
         public FriendService(
             MinigramDbContext context,
             IIdentityService identityService,
-            INotificationService<IFriendshipClient> notificationService)
+            INotificationService<IFriendManagementClient> notificationService)
         {
             this.context = context;
             this.identityService = identityService;
             this.notificationService = notificationService;
         }
         
-        public Task<PagedListDto<FriendshipDto>> ListFriendshipsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
+        public Task<PagedListDto<FriendshipDto>> ListFriendshipsAsync(
+            string searchText,
+            int pageIndex,
+            int pageSize,
+            CancellationToken cancellationToken = default)
         {
             return context.Friendships.Where(x => x.User1Id == identityService.CurrentUserId || x.User2Id == identityService.CurrentUserId)
                 .Select(x => new FriendshipDto
@@ -45,6 +49,7 @@ namespace Minigram.Application.Features.FriendManagement.Services
                         UserName = x.User1Id == identityService.CurrentUserId ? x.User2.UserName : x.User1.UserName
                     }
                 })
+                .Where(x => !string.IsNullOrEmpty(searchText) && x.Friend.UserName.ToLower().Contains(searchText.ToLower()))
                 .OrderBy(x => x.Friend.UserName)
                 .ToPagedListAsync(pageIndex, pageSize, cancellationToken);
         }
@@ -69,6 +74,9 @@ namespace Minigram.Application.Features.FriendManagement.Services
             context.Friendships.Add(friendship);
             context.FriendRequests.Remove(request);
             await context.SaveChangesAsync(cancellationToken);
+
+            await notificationService.User(request.SenderId)
+                .FriendRequestDeleted(request.Id);
 
             await notificationService.User(request.SenderId)
                 .FriendshipCreated(new FriendshipDto

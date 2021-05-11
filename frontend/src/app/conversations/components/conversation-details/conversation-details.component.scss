@@ -1,0 +1,14 @@
+nb-card {
+  min-width: 20vw;
+}
+
+nb-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nb-card-footer {
+  display: flex;
+  justify-content: flex-end;
+}

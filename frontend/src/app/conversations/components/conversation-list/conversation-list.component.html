@@ -1,1 +1,25 @@
-<p>conversation-list works!</p>
+<nb-card>
+  <nb-card-header>
+    <h2>Beszélgetések</h2>
+    <button nbButton hero status="success" (click)="openNewConversationDialog()">
+      <nb-icon icon="person-add-outline"></nb-icon>
+      Új beszélgetés
+    </button>
+  </nb-card-header>
+  <div class="empty-list" *ngIf="!((conversations$ | async)?.data.length)">
+    <nb-icon icon="close-outline"></nb-icon>
+    <span>Jelenleg még nincsenek beszélgetéseid.</span>
+  </div>
+  <nb-list>
+    <nb-list-item *ngFor="let conversation of (conversations$ | async)?.data">
+      <nb-user [name]="conversation.name" [title]="conversation.lastMessage | lastMessage"></nb-user>
+      <button nbButton status="primary" outline [routerLink]="['..', conversation.id]">
+        <nb-icon icon="paper-plane-outline"></nb-icon>
+        Megtekintés
+      </button>
+    </nb-list-item>
+  </nb-list>
+  <nb-card-footer>
+    <app-pager [model]="conversations$ | async | pager" (loadPage)="loadPage($event)"></app-pager>
+  </nb-card-footer>
+</nb-card>

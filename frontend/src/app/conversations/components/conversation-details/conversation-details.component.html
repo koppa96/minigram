@@ -1,0 +1,26 @@
+<nb-card>
+  <nb-card-header>
+    <h2>Tagok kezelése</h2>
+  </nb-card-header>
+  <nb-list>
+    <nb-list-item *ngFor="let membership of conversation.memberships">
+      <nb-user [name]="membership.member.userName"></nb-user>
+      <nb-toggle status="primary" [(checked)]="membership.isAdmin"
+                 (checkedChange)="changeStatus(membership)" *ngIf="conversation | isAdmin:currentUserId"
+                 [disabled]="!(conversation | anyOtherAdmins:currentUserId) && membership.isAdmin"></nb-toggle>
+      <button nbButton status="danger" ghost *ngIf="conversation | isAdmin:currentUserId"
+              (click)="removeMember(membership)">
+        <nb-icon icon="trash-2-outline" *ngIf="membership.member.id !== currentUserId; else leaveIcon"></nb-icon>
+        <ng-template #leaveIcon>
+          <nb-icon icon="log-out-outline"></nb-icon>
+        </ng-template>
+      </button>
+    </nb-list-item>
+  </nb-list>
+  <nb-card-footer>
+    <button nbButton status="primary" hero (click)="close()">
+      <nb-icon icon="close"></nb-icon>
+      Bezárás
+    </button>
+  </nb-card-footer>
+</nb-card>

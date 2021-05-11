@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { PagerComponent } from './components/pager/pager.component'
 import { NbButtonModule, NbIconModule } from '@nebular/theme'
 import { DefaultPipe } from './pipes/default.pipe'
+import { PagerPipe } from './pipes/pager.pipe'
 
 @NgModule({
   imports: [
@@ -12,11 +13,13 @@ import { DefaultPipe } from './pipes/default.pipe'
   ],
   declarations: [
     PagerComponent,
-    DefaultPipe
+    DefaultPipe,
+    PagerPipe
   ],
   exports: [
     PagerComponent,
-    DefaultPipe
+    DefaultPipe,
+    PagerPipe
   ]
 })
 export class SharedModule { }

@@ -9,6 +9,7 @@ import { NbEvaIconsModule } from '@nebular/eva-icons'
 import { OAuthModule, OAuthService } from 'angular-oauth2-oidc'
 import { HttpClientModule } from '@angular/common/http'
 import { API_BASE_URL } from './shared/clients'
+import { ReactiveFormsModule } from '@angular/forms'
 
 export function initializeApp(
   oauthService: OAuthService
@@ -53,7 +54,8 @@ export function initializeApp(
     NbDialogModule.forRoot({
       autoFocus: false
     }),
-    NbToastrModule.forRoot()
+    NbToastrModule.forRoot(),
+    ReactiveFormsModule
   ],
   providers: [
     {
