@@ -49,7 +49,7 @@ namespace Minigram.Application.Features.FriendManagement.Services
                         UserName = x.User1Id == identityService.CurrentUserId ? x.User2.UserName : x.User1.UserName
                     }
                 })
-                .Where(x => !string.IsNullOrEmpty(searchText) && x.Friend.UserName.ToLower().Contains(searchText.ToLower()))
+                .Where(x => x.Friend.UserName.ToLower().Contains(searchText.ToLower()))
                 .OrderBy(x => x.Friend.UserName)
                 .ToPagedListAsync(pageIndex, pageSize, cancellationToken);
         }
