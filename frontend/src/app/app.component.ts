@@ -54,4 +54,8 @@ export class AppComponent implements OnInit {
     this.hubService.addedToConversation$.subscribe(x => console.log('Added to conversation', x))
     this.hubService.messageReceived$.subscribe(x => console.log('Message received', x))
   }
+
+  logout() {
+    this.oauthService.logOut()
+  }
 }

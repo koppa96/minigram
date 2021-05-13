@@ -8,6 +8,8 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
 COPY ["Minigram.Api/Minigram.Api.csproj", "Minigram.Api/"]
+COPY ["Minigram.Application/Minigram.Application.csproj", "Minigram.Application/"]
+COPY ["Minigram.Dal/Minigram.Dal.csproj", "Minigram.Dal/"]
 RUN dotnet restore "Minigram.Api/Minigram.Api.csproj"
 COPY . .
 WORKDIR "/src/Minigram.Api"

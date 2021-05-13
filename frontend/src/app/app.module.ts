@@ -4,7 +4,15 @@ import { BrowserModule } from '@angular/platform-browser'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { NbThemeModule, NbLayoutModule, NbSidebarModule, NbMenuModule, NbDialogModule, NbToastrModule } from '@nebular/theme'
+import {
+  NbThemeModule,
+  NbLayoutModule,
+  NbSidebarModule,
+  NbMenuModule,
+  NbDialogModule,
+  NbToastrModule,
+  NbActionsModule, NbTooltipModule
+} from '@nebular/theme'
 import { NbEvaIconsModule } from '@nebular/eva-icons'
 import { OAuthModule, OAuthService } from 'angular-oauth2-oidc'
 import { HttpClientModule } from '@angular/common/http'
@@ -55,7 +63,9 @@ export function initializeApp(
       autoFocus: false
     }),
     NbToastrModule.forRoot(),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NbActionsModule,
+    NbTooltipModule
   ],
   providers: [
     {

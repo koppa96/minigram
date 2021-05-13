@@ -930,6 +930,16 @@
         "operationId": "Friendships_ListFriends",
         "parameters": [
           {
+            "name": "searchText",
+            "in": "query",
+            "description": "The name of the friend",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
             "name": "pageIndex",
             "in": "query",
             "description": "The index of the page",
@@ -938,7 +948,7 @@
               "format": "int32",
               "default": 0
             },
-            "x-position": 1
+            "x-position": 2
           },
           {
             "name": "pageSize",
@@ -949,7 +959,7 @@
               "format": "int32",
               "default": 25
             },
-            "x-position": 2
+            "x-position": 3
           }
         ],
         "responses": {

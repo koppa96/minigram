@@ -1,5 +1,10 @@
 <nb-layout withScroll="false">
-  <nb-layout-header fixed>Minigram</nb-layout-header>
+  <nb-layout-header fixed>
+    <h1>Minigram</h1>
+    <nb-actions size="medium">
+      <nb-action icon="log-out-outline" (click)="logout()" nbTooltip="Kijelentkezés"></nb-action>
+    </nb-actions>
+  </nb-layout-header>
   <nb-sidebar>
     <nb-menu [items]="menuItems"></nb-menu>
   </nb-sidebar>

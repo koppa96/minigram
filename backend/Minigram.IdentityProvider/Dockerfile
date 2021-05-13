@@ -8,6 +8,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
 COPY ["Minigram.IdentityProvider/Minigram.IdentityProvider.csproj", "Minigram.IdentityProvider/"]
+COPY ["Minigram.Dal/Minigram.Dal.csproj", "Minigram.Dal/"]
 RUN dotnet restore "Minigram.IdentityProvider/Minigram.IdentityProvider.csproj"
 COPY . .
 WORKDIR "/src/Minigram.IdentityProvider"

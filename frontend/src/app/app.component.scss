@@ -5,3 +5,9 @@
 ::ng-deep nb-layout-column {
   padding-bottom: 2.25rem !important;
 }
+
+nb-layout-header ::ng-deep nav.fixed {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

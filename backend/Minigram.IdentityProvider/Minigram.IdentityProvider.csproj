@@ -21,4 +21,8 @@
     <ProjectReference Include="..\Minigram.Dal\Minigram.Dal.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="..\.dockerignore" />
+  </ItemGroup>
+
 </Project>

@@ -26,6 +26,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Minigram.Application\Minigram.Application.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <None Remove="..\.dockerignore" />
+  </ItemGroup>
 
   <Target Name="NSwag" AfterTargets="Build" Condition="'$(Configuration)' == Debug">
     <Exec Command="$(NSwagExe_Net50) run nswag.json" />
